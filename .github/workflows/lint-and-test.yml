@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Detekt
 on:
   push:
     branches:
@@ -8,8 +8,8 @@ on:
       - '*'
 
 jobs:
-  lint-and-test:
-    name: Run Detekt and Tests
+  detekt:
+    name: Run Detekt
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -26,4 +26,4 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/ci' }}
       - run: ./gradlew :objective:detektJvmMain
       - run: ./gradlew :cli:detektMain
-      - run: ./gradlew :objective:jvmTest
+      - run: ./gradlew :objective:publishToMavenLocal
