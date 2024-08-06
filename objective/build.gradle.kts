@@ -2,23 +2,26 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+//    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
-    
+    applyDefaultHierarchyTemplate()
+    jvm()
+//    androidTarget {
+//        compilations.all {
+//            kotlinOptions {
+//                jvmTarget = JavaVersion.VERSION_11.toString()
+//            }
+//        }
+//    }
+
     val xcf = XCFramework()
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "objective"
@@ -29,22 +32,33 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.core)
+//            implementation(libs.ktor.client.logging)
+            api(libs.ktor.serialization.kotlinx.json)
+            api(libs.kotlinx.datetime)
         }
-        commonTest.dependencies {
+        jvmTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
 
-android {
-    namespace = "me.haroldmartin.objective"
-    compileSdk = 34
-    defaultConfig {
-        minSdk = 24
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-}
+// android {
+//    namespace = "me.haroldmartin.objective"
+//    compileSdk = 34
+//    defaultConfig {
+//        minSdk = 24
+//    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_11
+//        targetCompatibility = JavaVersion.VERSION_11
+//    }
+// }
