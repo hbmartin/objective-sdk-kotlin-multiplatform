@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint-and-test:
-    name: Run Detekt on the detekt rules
+    name: Run Detekt and Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -18,19 +18,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Run Detekt on the SDK
-        uses: gradle/gradle-build-action@v3
+          cache: 'gradle'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          arguments: :objective:detektJvmMain
-      - name: Run Detekt on the CLI
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: :cli:detektMain
-      - name: Run SDK tests
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: :objective:jvmTest
-      - name: Check that the publish plugin works
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: publishToMavenLocal
+          add-job-summary-as-pr-comment: always
+      - run: ./gradlew :objective:detektJvmMain
+      - run: ./gradlew :cli:detektMain
+      - run: ./gradlew :objective:jvmTest
+      - run: ./gradlew :objective:publishToMavenLocal
