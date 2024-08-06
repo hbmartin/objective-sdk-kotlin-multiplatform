@@ -13,6 +13,9 @@ import com.jakewharton.mosaic.ui.Color
 import com.jakewharton.mosaic.ui.Spacer
 import kotlin.math.roundToInt
 
+private val TableConfig.ColumnConfig.ColumnAlignment.isStart: Boolean
+    get() = this == TableConfig.ColumnConfig.ColumnAlignment.START
+
 @Immutable
 data class TableData<T>(
     val items: List<T>,
@@ -53,6 +56,7 @@ data class TableConfig<T>(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 fun <T> Table(
     tableData: TableData<T>,
@@ -61,87 +65,83 @@ fun <T> Table(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier =
-            modifier
-                .drawBehind {
-                    val weights = tableConfig.columnConfigs.sumOf { it.weight }
-                    val widthSinglePart = (width - tableConfig.columnConfigs.size) / weights
-                    val widths = tableConfig.columnConfigs.map { it.weight * widthSinglePart }
+        modifier = modifier
+            .drawBehind {
+                val weights = tableConfig.columnConfigs.sumOf { it.weight }
+                val widthSinglePart = (width - tableConfig.columnConfigs.size) / weights
+                val widths = tableConfig.columnConfigs.map { it.weight * widthSinglePart }
 
-                    val lastRange = tableData.items.takeLast(height - 1)
+                val lastRange = tableData.items.takeLast(height - 1)
 
-                    var column = 0
-                    tableConfig.columnConfigs.forEachIndexed { columnIndex, columnConfig ->
-                        val columnWidth = widths[columnIndex]
-                        if (columnConfig is TableConfig.ColumnConfig.StringColumnConfig) {
-                            val title =
-                                if (columnConfig.title.length < columnWidth) {
-                                    columnConfig.title
-                                } else if (!columnConfig.trimFromEnd) {
-                                    "…" + columnConfig.title.substring(0, columnWidth - 1)
-                                } else {
-                                    columnConfig.title.substring(
-                                        columnConfig.title.length - columnWidth - 1,
-                                        columnConfig.title.length,
-                                    ) + "…"
-                                }
-                            drawText(
-                                row = 0,
-                                column = column,
-                                string = title,
-                                foreground = tableConfig.titleColor,
-                            )
-                        }
+                var column = 0
+                tableConfig.columnConfigs.forEachIndexed { columnIndex, columnConfig ->
+                    val columnWidth = widths[columnIndex]
+                    if (columnConfig is TableConfig.ColumnConfig.StringColumnConfig) {
+                        val title =
+                            if (columnConfig.title.length < columnWidth) {
+                                columnConfig.title
+                            } else if (!columnConfig.trimFromEnd) {
+                                "…" + columnConfig.title.substring(0, columnWidth - 1)
+                            } else {
+                                columnConfig.title.substring(
+                                    columnConfig.title.length - columnWidth - 1,
+                                    columnConfig.title.length,
+                                ) + "…"
+                            }
+                        drawText(
+                            row = 0,
+                            column = column,
+                            string = title,
+                            foreground = tableConfig.titleColor,
+                        )
+                    }
 
-                        lastRange.forEachIndexed { index, item ->
-                            when (columnConfig) {
-                                is TableConfig.ColumnConfig.StringColumnConfig -> {
-                                    val string = columnConfig.stringFromItem(item)
-                                    val text =
-                                        if (string.length < columnWidth) {
-                                            string
-                                        } else {
-                                            string.substring(0, columnWidth)
+                    lastRange.forEachIndexed { index, item ->
+                        when (columnConfig) {
+                            is TableConfig.ColumnConfig.StringColumnConfig -> {
+                                val string = columnConfig.stringFromItem(item)
+                                val text =
+                                    if (string.length < columnWidth) {
+                                        string
+                                    } else {
+                                        string.substring(0, columnWidth)
+                                    }
+                                drawText(
+                                    row = index + 1,
+                                    column = if (columnConfig.valueAlignment.isStart) {
+                                        column
+                                    } else {
+                                        column + columnWidth - text.length
+                                    },
+                                    string = text,
+                                    foreground = if (index == selectedRow) {
+                                        columnConfig.selectedValueColor
+                                    } else {
+                                        columnConfig.valueColor
+                                    },
+                                )
+                            }
+                            is TableConfig.ColumnConfig.ProgressColumnConfig -> {
+                                drawText(
+                                    row = index + 1,
+                                    column = column,
+                                    string = buildAnnotatedString {
+                                        val progress = columnConfig.progressFromItem(item)
+                                        val filledPart = (columnWidth * progress).roundToInt()
+                                        withStyle(SpanStyle(columnConfig.filledColor)) {
+                                            append("━".repeat(filledPart))
                                         }
-                                    drawText(
-                                        row = index + 1,
-                                        column =
-                                            if (columnConfig.valueAlignment == TableConfig.ColumnConfig.ColumnAlignment.START) {
-                                                column
-                                            } else {
-                                                column + columnWidth - text.length
-                                            },
-                                        string = text,
-                                        foreground =
-                                            if (index == selectedRow) {
-                                                columnConfig.selectedValueColor
-                                            } else {
-                                                columnConfig.valueColor
-                                            },
-                                    )
-                                }
-                                is TableConfig.ColumnConfig.ProgressColumnConfig -> {
-                                    drawText(
-                                        row = index + 1,
-                                        column = column,
-                                        string =
-                                            buildAnnotatedString {
-                                                val progress = columnConfig.progressFromItem(item)
-                                                val filledPart = (columnWidth * progress).roundToInt()
-                                                withStyle(SpanStyle(columnConfig.filledColor)) {
-                                                    append("━".repeat(filledPart))
-                                                }
-                                                withStyle(SpanStyle(columnConfig.emptyColor)) {
-                                                    append("━".repeat(columnWidth - filledPart))
-                                                }
-                                            },
-                                    )
-                                }
+                                        withStyle(SpanStyle(columnConfig.emptyColor)) {
+                                            append("━".repeat(columnWidth - filledPart))
+                                        }
+                                    },
+                                )
                             }
                         }
-                        column += columnWidth + 1
                     }
-                },
+                    column += columnWidth + 1
+                }
+            },
     ) {
         Spacer(modifier = Modifier.fillMaxSize())
     }

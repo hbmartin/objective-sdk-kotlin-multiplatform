@@ -25,36 +25,34 @@ fun ObjectsScreen(
             Table(
                 tableData = TableData(uiState.items),
                 selectedRow = uiState.selectedRow,
-                tableConfig =
-                    TableConfig(
-                        titleColor = LocalColorsPalette.current.callsTableHeaderFg,
-                        columnConfigs =
-                            listOf(
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "id",
-                                    stringFromItem = { it.id },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    trimFromEnd = true,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "updated at",
-                                    stringFromItem = { it.updatedAt },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                    trimFromEnd = true,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "data",
-                                    stringFromItem = { it.objectData?.toString() ?: "" },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                    weight = 5,
-                                ),
-                            ),
+                tableConfig = TableConfig(
+                    titleColor = LocalColorsPalette.current.callsTableHeaderFg,
+                    columnConfigs = listOf(
+                        TableConfig.ColumnConfig.StringColumnConfig(
+                            title = "id",
+                            stringFromItem = { it.id },
+                            valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
+                            selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
+                            trimFromEnd = true,
+                        ),
+                        TableConfig.ColumnConfig.StringColumnConfig(
+                            title = "updated at",
+                            stringFromItem = { it.updatedAt },
+                            valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
+                            selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
+                            valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
+                            trimFromEnd = true,
+                        ),
+                        TableConfig.ColumnConfig.StringColumnConfig(
+                            title = "data",
+                            stringFromItem = { it.objectData?.toString().orEmpty() },
+                            valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
+                            selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
+                            valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
+                            weight = 5,
+                        ),
                     ),
+                ),
             )
         } else {
             Text("Loading data, please wait")

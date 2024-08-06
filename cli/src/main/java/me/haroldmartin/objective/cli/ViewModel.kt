@@ -15,9 +15,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import me.haroldmartin.objective.cli.stores.IndexesStore
 import me.haroldmartin.objective.cli.stores.ObjectsStore
-import java.io.File
 import kotlin.system.exitProcess
 
+@Suppress("TooManyFunctions")
 class ViewModel(
     private val coroutineScope: CoroutineScope,
     objectiveApiKey: String,
@@ -109,7 +109,10 @@ class ViewModel(
             UiState.Screen.Objects -> {
                 objectsStore.selectedIdAndContent?.let { (id, content) ->
                     dialogScreenPreviousState = UiState.Screen.Objects
-                    dialogScreenFlow.value = DialogScreenUiState("Proceed to delete object `$id` ?", content.toStringList())
+                    dialogScreenFlow.value = DialogScreenUiState(
+                        title = "Proceed to delete object `$id` ?",
+                        messages = content.toStringList(),
+                    )
                     currentScreenFlow.value = UiState.Screen.Dialog
                 }
             }
@@ -124,10 +127,6 @@ class ViewModel(
     }
 
     fun onYPress() {
-        File("objective-cli.log").appendText(
-            "currentScreenFlow.value: ${currentScreenFlow.value}\n" +
-                "dialogScreenPreviousState: ${dialogScreenPreviousState}\n",
-        )
         if (currentScreenFlow.value == UiState.Screen.Dialog) {
             when (dialogScreenPreviousState) {
                 UiState.Screen.Objects -> {
@@ -158,8 +157,8 @@ class ViewModel(
     private fun switchScreenToRight() {
         val currentScreen = currentScreenFlow.value
         currentScreenFlow.value =
-            UiState.Screen.entries[
-                if (currentScreen.ordinal < UiState.Screen.entries.lastIndex) {
+            UiState.Screen.navEntries[
+                if (currentScreen.ordinal < UiState.Screen.navEntries.lastIndex) {
                     currentScreen.ordinal + 1
                 } else {
                     0
@@ -177,4 +176,4 @@ private fun JsonObject?.toStringList(): List<String> =
             " \"$k\": $value" + if (index < this.size - 1) "," else ""
         }?.let {
             listOf("{") + it + listOf("}")
-        } ?: emptyList()
+        }.orEmpty()

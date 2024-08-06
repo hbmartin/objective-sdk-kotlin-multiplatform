@@ -1,0 +1,36 @@
+name: Lint and Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  lint-and-test:
+    name: Run Detekt on the detekt rules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Run Detekt on the SDK
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: :objective:detektJvmMain
+      - name: Run Detekt on the CLI
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: :cli:detektMain
+      - name: Run SDK tests
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: :objective:jvmTest
+      - name: Check that the publish plugin works
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: publishToMavenLocal
