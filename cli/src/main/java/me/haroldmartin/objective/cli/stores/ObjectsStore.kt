@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonObject
 import me.haroldmartin.objective.ObjectiveClient
 import me.haroldmartin.objective.cli.ObjectsListScreenUiState
 
@@ -13,13 +14,22 @@ class ObjectsStore(
 ) {
     private val client = ObjectiveClient(objectiveKey)
     private val stateFlow = MutableStateFlow(ObjectsListScreenUiState())
+
     val state = stateFlow.asStateFlow()
+
+    val selectedIdAndContent: Pair<String, JsonObject?>?
+        get() =
+            stateFlow.value.selectedRow?.let { selectedRow ->
+                stateFlow.value.items?.get(selectedRow)?.let {
+                    it.id to it.objectData
+                }
+            }
 
     // TODO: pagination
     fun load() =
         coroutineScope.launch {
             stateFlow.value = ObjectsListScreenUiState(items = null)
-            val objects = client.getObjects(includeObject = true, limit = 100)
+            val objects = client.getObjects(includeObject = true, limit = 20)
             stateFlow.value =
                 ObjectsListScreenUiState(
                     objects
@@ -27,7 +37,7 @@ class ObjectsStore(
                             ObjectsListScreenUiState.ObjectItem(
                                 id = it.id,
                                 updatedAt = it.updatedAt ?: "?",
-                                objectAsString = it.objectData.toString(),
+                                objectData = it.objectData,
                             )
                         },
                 )
@@ -59,11 +69,52 @@ class ObjectsStore(
     }
 
     fun delete() {
-        val indexId =
+        val objectId =
             stateFlow.value.selectedRow?.let {
                 stateFlow.value.items
                     ?.get(it)
                     ?.id
             } ?: return
+
+        updateItemUpdatedAt(objectId, "[deleting...]")
+        coroutineScope.launch {
+            val didRemove = client.deleteObject(objectId)
+            if (didRemove) {
+                removeItem(objectId)
+            } else {
+                updateItemUpdatedAt(objectId, "[error]")
+            }
+        }
+    }
+
+    private fun updateItemUpdatedAt(
+        objectId: String,
+        message: String,
+    ) {
+        val updatedItems =
+            stateFlow.value.items?.map {
+                if (it.id == objectId) {
+                    it.copy(
+                        updatedAt = message,
+                    )
+                } else {
+                    it
+                }
+            }
+        stateFlow.value =
+            stateFlow.value.copy(items = updatedItems)
+    }
+
+    private fun removeItem(objectId: String) {
+        val updatedItems =
+            stateFlow.value.items?.mapNotNull {
+                if (it.id == objectId) {
+                    null
+                } else {
+                    it
+                }
+            }
+        stateFlow.value =
+            stateFlow.value.copy(items = updatedItems)
     }
 }

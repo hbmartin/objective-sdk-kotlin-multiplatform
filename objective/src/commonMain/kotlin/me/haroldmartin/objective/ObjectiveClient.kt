@@ -26,6 +26,13 @@ class ObjectiveClient(
 
     suspend fun createIndex(indexConfiguration: IndexConfiguration): IndexId = httpClient.post("indexes", indexConfiguration).body<Id>().id
 
+    suspend fun deleteIndex(indexId: IndexId): Boolean =
+        httpClient.delete("indexes/$indexId").let {
+            return it.status.value in 200..299
+        }
+
+    // TODO: search
+
     suspend fun getObjects(
         includeObject: Boolean = false,
         includeMetadata: Boolean = false,
@@ -40,6 +47,8 @@ class ObjectiveClient(
             .objects
 
     suspend fun createObject(jsonObject: JsonObject): ObjectId = httpClient.post("objects", jsonObject).body<Id>().id
+
+    // TODO: upsert, bulk create, bulk delete
 
     suspend fun deleteObject(objectId: ObjectId): Boolean =
         httpClient.delete("objects/$objectId").let {

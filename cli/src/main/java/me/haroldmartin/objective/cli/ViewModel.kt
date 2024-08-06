@@ -11,8 +11,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import me.haroldmartin.objective.cli.stores.IndexesStore
 import me.haroldmartin.objective.cli.stores.ObjectsStore
+import java.io.File
 import kotlin.system.exitProcess
 
 class ViewModel(
@@ -22,7 +25,8 @@ class ViewModel(
     private val currentScreenFlow = MutableStateFlow(UiState.Screen.Indexes)
     private val indexesStore = IndexesStore(coroutineScope, objectiveApiKey)
     private val objectsStore = ObjectsStore(coroutineScope, objectiveApiKey)
-    private val dialogScreenFlow = MutableStateFlow(DialogScreenUiState("", ""))
+    private val dialogScreenFlow = MutableStateFlow(DialogScreenUiState("", emptyList()))
+    private var dialogScreenPreviousState: UiState.Screen = UiState.Screen.Indexes
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val uiStateFlow: StateFlow<UiState> =
@@ -53,18 +57,18 @@ class ViewModel(
     }
 
     fun onArrowUpPress() {
-        if (currentScreenFlow.value == UiState.Screen.Indexes) {
-            indexesStore.selectUp()
-        } else if (currentScreenFlow.value == UiState.Screen.Objects) {
-            objectsStore.selectUp()
+        when (currentScreenFlow.value) {
+            UiState.Screen.Indexes -> indexesStore.selectUp()
+            UiState.Screen.Objects -> objectsStore.selectUp()
+            UiState.Screen.Dialog -> Unit
         }
     }
 
     fun onArrowDownPress() {
-        if (currentScreenFlow.value == UiState.Screen.Indexes) {
-            indexesStore.selectDown()
-        } else if (currentScreenFlow.value == UiState.Screen.Objects) {
-            objectsStore.selectDown()
+        when (currentScreenFlow.value) {
+            UiState.Screen.Indexes -> indexesStore.selectDown()
+            UiState.Screen.Objects -> objectsStore.selectDown()
+            UiState.Screen.Dialog -> Unit
         }
     }
 
@@ -86,20 +90,56 @@ class ViewModel(
     }
 
     fun onRPress() {
-        if (currentScreenFlow.value == UiState.Screen.Indexes) {
-            indexesStore.refresh()
-        } else if (currentScreenFlow.value == UiState.Screen.Objects) {
-            objectsStore.load()
+        when (currentScreenFlow.value) {
+            UiState.Screen.Indexes -> indexesStore.refresh()
+            UiState.Screen.Objects -> objectsStore.load()
+            UiState.Screen.Dialog -> Unit
         }
     }
 
     fun onDPress() {
-        dialogScreenFlow.value = DialogScreenUiState("Delete Thingy", "Are you super sure?")
-        currentScreenFlow.value = UiState.Screen.Dialog
-        if (currentScreenFlow.value == UiState.Screen.Indexes) {
-            // Show confirmation dialog
-        } else if (currentScreenFlow.value == UiState.Screen.Objects) {
-//            objectsStore.delete()
+        when (currentScreenFlow.value) {
+            UiState.Screen.Indexes -> {
+                indexesStore.selectedIdAndStatuses?.let { (id, statuses) ->
+                    dialogScreenPreviousState = UiState.Screen.Indexes
+                    dialogScreenFlow.value = DialogScreenUiState("Proceed to delete index `$id` ?", statuses)
+                    currentScreenFlow.value = UiState.Screen.Dialog
+                }
+            }
+            UiState.Screen.Objects -> {
+                objectsStore.selectedIdAndContent?.let { (id, content) ->
+                    dialogScreenPreviousState = UiState.Screen.Objects
+                    dialogScreenFlow.value = DialogScreenUiState("Proceed to delete object `$id` ?", content.toStringList())
+                    currentScreenFlow.value = UiState.Screen.Dialog
+                }
+            }
+            UiState.Screen.Dialog -> Unit
+        }
+    }
+
+    fun onNPress() {
+        if (currentScreenFlow.value == UiState.Screen.Dialog) {
+            currentScreenFlow.value = dialogScreenPreviousState
+        }
+    }
+
+    fun onYPress() {
+        File("objective-cli.log").appendText(
+            "currentScreenFlow.value: ${currentScreenFlow.value}\n" +
+                "dialogScreenPreviousState: ${dialogScreenPreviousState}\n",
+        )
+        if (currentScreenFlow.value == UiState.Screen.Dialog) {
+            when (dialogScreenPreviousState) {
+                UiState.Screen.Objects -> {
+                    objectsStore.delete()
+                    currentScreenFlow.value = dialogScreenPreviousState
+                }
+                UiState.Screen.Indexes -> {
+                    indexesStore.delete()
+                    currentScreenFlow.value = dialogScreenPreviousState
+                }
+                UiState.Screen.Dialog -> Unit
+            }
         }
     }
 
@@ -127,3 +167,14 @@ class ViewModel(
             ]
     }
 }
+
+private fun JsonObject?.toStringList(): List<String> =
+    this
+        ?.entries
+        ?.mapIndexed { index, (k, v) ->
+            val quoteValue = (v as? JsonPrimitive)?.isString == true
+            val value: String = if (quoteValue) "\"$v\"" else v.toString()
+            " \"$k\": $value" + if (index < this.size - 1) "," else ""
+        }?.let {
+            listOf("{") + it + listOf("}")
+        } ?: emptyList()

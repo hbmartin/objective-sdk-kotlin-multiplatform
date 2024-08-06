@@ -42,7 +42,7 @@ fun App(
             modifier =
                 Modifier
                     .width(terminal.size.width)
-                    .height(terminal.size.height - 4) // subtraction of one is necessary, because there is a line with a cursor at the bottom, which moves up all the content
+                    .height(terminal.size.height - 3) // subtraction of one is necessary, because there is a line with a cursor at the bottom, which moves up all the content
                     .background(LocalColorsPalette.current.mainBg),
         ) {
             when (uiState.screenUiState) {
@@ -60,7 +60,7 @@ fun App(
                 is DialogScreenUiState ->
                     ConfirmationDialog(
                         title = (uiState.screenUiState as DialogScreenUiState).title,
-                        message = (uiState.screenUiState as DialogScreenUiState).message,
+                        messages = (uiState.screenUiState as DialogScreenUiState).messages,
                         titleColor = LocalColorsPalette.current.callsTitleFg,
                         borderColor = LocalColorsPalette.current.dangerBg,
                         modifier = Modifier.padding(horizontal = 1),
@@ -99,6 +99,10 @@ fun App(
                             viewModel.onRPress()
                         } else if (keyEvent.utf16CodePoint == 'd'.code || keyEvent.utf16CodePoint == 'D'.code) {
                             viewModel.onDPress()
+                        } else if (keyEvent.utf16CodePoint == 'n'.code || keyEvent.utf16CodePoint == 'N'.code) {
+                            viewModel.onNPress()
+                        } else if (keyEvent.utf16CodePoint == 'y'.code || keyEvent.utf16CodePoint == 'Y'.code) {
+                            viewModel.onYPress()
                         }
                     }
                 }
@@ -116,7 +120,8 @@ private fun BottomStatusBar(
     Box(modifier = modifier.background(LocalColorsPalette.current.menuBg)) {
         Text(
             buildAnnotatedString {
-                UiState.Screen.entries.forEachIndexed { index, screen ->
+                val entries = UiState.Screen.entries.filter { it.displayName != null }
+                entries.forEachIndexed { index, screen ->
                     if (screen == currentScreen) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuHighlightFg)) {
                             append(screen.displayName)
@@ -124,7 +129,7 @@ private fun BottomStatusBar(
                     } else {
                         append(screen.displayName)
                     }
-                    if (index < UiState.Screen.entries.lastIndex) {
+                    if (index < entries.lastIndex) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuDividerFg)) {
                             append(" | ")
                         }
