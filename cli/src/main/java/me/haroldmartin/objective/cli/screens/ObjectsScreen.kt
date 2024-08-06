@@ -16,7 +16,7 @@ fun ObjectsScreen(
     modifier: Modifier = Modifier,
 ) {
     BorderedTitledBox(
-        title = "Indexes",
+        title = "Objects",
         titleColor = LocalColorsPalette.current.callsTitleFg,
         borderColor = LocalColorsPalette.current.callsBorderFg,
         modifier = modifier,
@@ -47,7 +47,7 @@ fun ObjectsScreen(
                                 ),
                                 TableConfig.ColumnConfig.StringColumnConfig(
                                     title = "data",
-                                    stringFromItem = { it.objectAsString },
+                                    stringFromItem = { it.objectData?.toString() ?: "" },
                                     valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
                                     selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
                                     valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,

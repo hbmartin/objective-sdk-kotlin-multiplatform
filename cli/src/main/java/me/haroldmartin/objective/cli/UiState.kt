@@ -1,6 +1,7 @@
 package me.haroldmartin.objective.cli
 
 import androidx.compose.runtime.Immutable
+import kotlinx.serialization.json.JsonObject
 
 @Immutable
 data class UiState(
@@ -31,7 +32,7 @@ sealed interface ScreenUiState
 @Immutable
 data class DialogScreenUiState(
     val title: String,
-    val message: String,
+    val messages: List<String>,
 ) : ScreenUiState
 
 @Immutable
@@ -56,7 +57,15 @@ data class IndexesListScreenUiState(
         val processing: Int? = null,
         val ready: Int? = null,
         val error: Int? = null,
-    )
+    ) {
+        val objectsStatuses: List<String> =
+            listOf(
+                "Uploaded: $uploaded",
+                "Processing: $processing",
+                "Ready: $ready",
+                "Error: $error",
+            )
+    }
 }
 
 @Immutable
@@ -70,6 +79,6 @@ data class ObjectsListScreenUiState(
     data class ObjectItem(
         val id: String,
         val updatedAt: String,
-        val objectAsString: String,
+        val objectData: JsonObject?,
     )
 }

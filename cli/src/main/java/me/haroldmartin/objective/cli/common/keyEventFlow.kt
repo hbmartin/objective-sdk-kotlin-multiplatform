@@ -103,7 +103,6 @@ val keyEventFlow: Flow<KeyEvent> =
                         '\u0008', '\u007F' -> emit(KeyEvent(Key.Backspace))
                         '\u0009' -> emit(KeyEvent(Key.Tab))
                         '\u000D' -> emit(KeyEvent(Key.Enter))
-                        '\u000B' -> emit(KeyEvent(Key.Esc))
                         else -> emit(KeyEvent(Key.Unknown, firstInput))
                     }
                 } else if (firstInputChar.isLetterOrDigit() || firstInputChar.isWhitespace()) {
