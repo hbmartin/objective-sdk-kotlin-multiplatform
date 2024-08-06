@@ -23,7 +23,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           add-job-summary-as-pr-comment: always
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/ci' }}
       - run: ./gradlew :objective:detektJvmMain
       - run: ./gradlew :cli:detektMain
       - run: ./gradlew :objective:jvmTest
-      - run: ./gradlew :objective:publishToMavenLocal
