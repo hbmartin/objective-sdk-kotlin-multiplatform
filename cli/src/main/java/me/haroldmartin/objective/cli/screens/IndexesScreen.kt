@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.jakewharton.mosaic.modifier.Modifier
 import com.jakewharton.mosaic.ui.Text
 import me.haroldmartin.objective.cli.IndexesListScreenUiState
+import me.haroldmartin.objective.cli.IndexesListScreenUiState.IndexItem
 import me.haroldmartin.objective.cli.common.BorderedTitledBox
 import me.haroldmartin.objective.cli.common.Table
 import me.haroldmartin.objective.cli.common.TableConfig
@@ -15,6 +16,20 @@ fun IndexesScreen(
     uiState: IndexesListScreenUiState,
     modifier: Modifier = Modifier,
 ) {
+    val valueColor = LocalColorsPalette.current.callsTableRowTop1Fg
+    val selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg
+
+    val stringColumnConfig: (String, (IndexItem) -> String) -> TableConfig.ColumnConfig.StringColumnConfig<IndexItem> =
+        { title, stringFromItem ->
+            TableConfig.ColumnConfig.StringColumnConfig<IndexItem>(
+                title = title,
+                stringFromItem = stringFromItem,
+                valueColor = valueColor,
+                selectedValueColor = selectedValueColor,
+                valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
+            )
+        }
+
     BorderedTitledBox(
         title = "Indexes",
         titleColor = LocalColorsPalette.current.callsTitleFg,
@@ -25,54 +40,17 @@ fun IndexesScreen(
             Table(
                 tableData = TableData(uiState.items),
                 selectedRow = uiState.selectedRow,
-                tableConfig =
-                    TableConfig(
-                        titleColor = LocalColorsPalette.current.callsTableHeaderFg,
-                        columnConfigs =
-                            listOf(
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "id",
-                                    stringFromItem = { it.id },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "updated at",
-                                    stringFromItem = { it.updatedAt },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "uploaded",
-                                    stringFromItem = { it.uploaded?.toString() ?: "..." },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "ready",
-                                    stringFromItem = { it.ready?.toString() ?: "..." },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "processing",
-                                    stringFromItem = { it.processing?.toString() ?: "..." },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                ),
-                                TableConfig.ColumnConfig.StringColumnConfig(
-                                    title = "error",
-                                    stringFromItem = { it.error?.toString() ?: "..." },
-                                    valueColor = LocalColorsPalette.current.callsTableRowTop1Fg,
-                                    selectedValueColor = LocalColorsPalette.current.callsTableRowTop2Fg,
-                                    valueAlignment = TableConfig.ColumnConfig.ColumnAlignment.START,
-                                ),
-                            ),
+                tableConfig = TableConfig(
+                    titleColor = LocalColorsPalette.current.callsTableHeaderFg,
+                    columnConfigs = listOf(
+                        stringColumnConfig("id") { it.id },
+                        stringColumnConfig("updated at") { it.updatedAt },
+                        stringColumnConfig("uploaded") { it.uploaded?.toString() ?: "..." },
+                        stringColumnConfig("ready") { it.ready?.toString() ?: "..." },
+                        stringColumnConfig("processing") { it.processing?.toString() ?: "..." },
+                        stringColumnConfig("error") { it.error?.toString() ?: "..." },
                     ),
+                ),
             )
         } else {
             Text("Loading data, please wait")

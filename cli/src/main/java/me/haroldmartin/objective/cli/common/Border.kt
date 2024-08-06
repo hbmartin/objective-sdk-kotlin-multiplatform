@@ -7,6 +7,7 @@ import com.jakewharton.mosaic.layout.padding
 import com.jakewharton.mosaic.modifier.Modifier
 import com.jakewharton.mosaic.ui.Color
 
+@Suppress("LongParameterList")
 @Stable
 fun Modifier.border(
     topStart: Char = '┌',
@@ -34,6 +35,7 @@ fun Modifier.border(
             ),
         ).padding(all = 1)
 
+@Suppress("LongParameterList")
 private class BorderModifier(
     private val topStart: String,
     private val topEnd: String,

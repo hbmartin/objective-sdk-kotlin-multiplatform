@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.haroldmartin.objective.cli.common.ConfirmationDialog
 import me.haroldmartin.objective.cli.common.Key
+import me.haroldmartin.objective.cli.common.KeyEvent
 import me.haroldmartin.objective.cli.common.key
 import me.haroldmartin.objective.cli.common.keyEventFlow
 import me.haroldmartin.objective.cli.common.utf16CodePoint
@@ -29,6 +30,9 @@ import me.haroldmartin.objective.cli.palletes.ColorsPalette
 import me.haroldmartin.objective.cli.palletes.LocalColorsPalette
 import me.haroldmartin.objective.cli.screens.IndexesScreen
 import me.haroldmartin.objective.cli.screens.ObjectsScreen
+
+// subtraction is necessary, because there is a line with a cursor at the bottom, which moves up all the content
+const val REDUCE_HEIGHT = 3
 
 @Composable
 fun App(
@@ -39,11 +43,10 @@ fun App(
     val uiState by viewModel.uiStateFlow.collectAsState()
     CompositionLocalProvider(LocalColorsPalette provides colorsPalette) {
         Box(
-            modifier =
-                Modifier
-                    .width(terminal.size.width)
-                    .height(terminal.size.height - 3) // subtraction of one is necessary, because there is a line with a cursor at the bottom, which moves up all the content
-                    .background(LocalColorsPalette.current.mainBg),
+            modifier = Modifier
+                .width(terminal.size.width)
+                .height(terminal.size.height - REDUCE_HEIGHT)
+                .background(LocalColorsPalette.current.mainBg),
         ) {
             when (uiState.screenUiState) {
                 is IndexesListScreenUiState ->
@@ -68,13 +71,12 @@ fun App(
             }
             BottomStatusBar(
                 currentScreen = UiState.Screen.fromUiState(uiState.screenUiState),
-                commonInfo = (uiState.screenUiState as? ListScreenUiState)?.commonInfo ?: "",
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(1)
-                        .padding(horizontal = 1)
-                        .align(Alignment.BottomCenter),
+                commonInfo = (uiState.screenUiState as? ListScreenUiState)?.commonInfo.orEmpty(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1)
+                    .padding(horizontal = 1)
+                    .align(Alignment.BottomCenter),
             )
         }
     }
@@ -82,30 +84,38 @@ fun App(
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             keyEventFlow.collect { keyEvent ->
-                when (keyEvent.key) {
-                    Key.DirectionLeft -> viewModel.onArrowLeftPress()
-                    Key.DirectionRight -> viewModel.onArrowRightPress()
-                    Key.DirectionUp -> viewModel.onArrowUpPress()
-                    Key.DirectionDown -> viewModel.onArrowDownPress()
-                    Key.Tab -> viewModel.onTabPress()
-                    Key.Type -> {
-                        if (keyEvent.utf16CodePoint == 'q'.code || keyEvent.utf16CodePoint == 'Q'.code) {
-                            viewModel.onQPress()
-                        } else if (keyEvent.utf16CodePoint == 'i'.code || keyEvent.utf16CodePoint == 'I'.code) {
-                            viewModel.onIPress()
-                        } else if (keyEvent.utf16CodePoint == 'o'.code || keyEvent.utf16CodePoint == 'O'.code) {
-                            viewModel.onOPress()
-                        } else if (keyEvent.utf16CodePoint == 'r'.code || keyEvent.utf16CodePoint == 'R'.code) {
-                            viewModel.onRPress()
-                        } else if (keyEvent.utf16CodePoint == 'd'.code || keyEvent.utf16CodePoint == 'D'.code) {
-                            viewModel.onDPress()
-                        } else if (keyEvent.utf16CodePoint == 'n'.code || keyEvent.utf16CodePoint == 'N'.code) {
-                            viewModel.onNPress()
-                        } else if (keyEvent.utf16CodePoint == 'y'.code || keyEvent.utf16CodePoint == 'Y'.code) {
-                            viewModel.onYPress()
-                        }
-                    }
-                }
+                sendKeyToViewModel(keyEvent, viewModel)
+            }
+        }
+    }
+}
+
+@Suppress("CyclomaticComplexMethod")
+private fun sendKeyToViewModel(
+    keyEvent: KeyEvent,
+    viewModel: ViewModel,
+) {
+    when (keyEvent.key) {
+        Key.DirectionLeft -> viewModel.onArrowLeftPress()
+        Key.DirectionRight -> viewModel.onArrowRightPress()
+        Key.DirectionUp -> viewModel.onArrowUpPress()
+        Key.DirectionDown -> viewModel.onArrowDownPress()
+        Key.Tab -> viewModel.onTabPress()
+        Key.Type -> {
+            if (keyEvent.utf16CodePoint == 'q'.code || keyEvent.utf16CodePoint == 'Q'.code) {
+                viewModel.onQPress()
+            } else if (keyEvent.utf16CodePoint == 'i'.code || keyEvent.utf16CodePoint == 'I'.code) {
+                viewModel.onIPress()
+            } else if (keyEvent.utf16CodePoint == 'o'.code || keyEvent.utf16CodePoint == 'O'.code) {
+                viewModel.onOPress()
+            } else if (keyEvent.utf16CodePoint == 'r'.code || keyEvent.utf16CodePoint == 'R'.code) {
+                viewModel.onRPress()
+            } else if (keyEvent.utf16CodePoint == 'd'.code || keyEvent.utf16CodePoint == 'D'.code) {
+                viewModel.onDPress()
+            } else if (keyEvent.utf16CodePoint == 'n'.code || keyEvent.utf16CodePoint == 'N'.code) {
+                viewModel.onNPress()
+            } else if (keyEvent.utf16CodePoint == 'y'.code || keyEvent.utf16CodePoint == 'Y'.code) {
+                viewModel.onYPress()
             }
         }
     }
@@ -120,8 +130,7 @@ private fun BottomStatusBar(
     Box(modifier = modifier.background(LocalColorsPalette.current.menuBg)) {
         Text(
             buildAnnotatedString {
-                val entries = UiState.Screen.entries.filter { it.displayName != null }
-                entries.forEachIndexed { index, screen ->
+                UiState.Screen.navEntries.forEachIndexed { index, screen ->
                     if (screen == currentScreen) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuHighlightFg)) {
                             append(screen.displayName)
@@ -129,7 +138,7 @@ private fun BottomStatusBar(
                     } else {
                         append(screen.displayName)
                     }
-                    if (index < entries.lastIndex) {
+                    if (index < UiState.Screen.navEntries.lastIndex) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuDividerFg)) {
                             append(" | ")
                         }

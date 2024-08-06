@@ -11,9 +11,9 @@ subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
-        detektPlugins(rootProject.libs.detekt.ruleauthors)
     }
     detekt {
+        allRules = true
         reports {
             xml.required.set(true)
             txt.required.set(false)

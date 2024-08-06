@@ -17,10 +17,12 @@ fun main(args: Array<String>) =
         awaitCancellation()
     }
 
+@Suppress("TooGenericExceptionThrown")
 fun getObjectiveApiKey(args: Array<String>): String =
     parseArgsForObjectiveKey(args) ?: System.getenv("OBJECTIVE_KEY") ?: run {
         throw RuntimeException(
-            "Objective API key not found. Please provide it via the OBJECTIVE_KEY environment variable or the -k command line argument.",
+            "Objective API key not found. Please provide it via the OBJECTIVE_KEY " +
+                "environment variable or the -k command line argument.",
         )
     }
 

@@ -2,20 +2,13 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-//    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
+    id("com.vanniktech.maven.publish") version "0.29.0"
 }
 
 kotlin {
     applyDefaultHierarchyTemplate()
     jvm()
-//    androidTarget {
-//        compilations.all {
-//            kotlinOptions {
-//                jvmTarget = JavaVersion.VERSION_11.toString()
-//            }
-//        }
-//    }
 
     val xcf = XCFramework()
     listOf(
@@ -34,7 +27,6 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
-//            implementation(libs.ktor.client.logging)
             api(libs.ktor.serialization.kotlinx.json)
             api(libs.kotlinx.datetime)
         }
@@ -51,14 +43,32 @@ kotlin {
     }
 }
 
-// android {
-//    namespace = "me.haroldmartin.objective"
-//    compileSdk = 34
-//    defaultConfig {
-//        minSdk = 24
-//    }
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_11
-//        targetCompatibility = JavaVersion.VERSION_11
-//    }
-// }
+mavenPublishing {
+    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
+
+    pom {
+        name.set("Objective SDK")
+        description.set("Client SDK for Objective Inc. object, indexing, and search.")
+        inceptionYear.set("2024")
+        url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("hmartin")
+                name.set("Harold Martin")
+                url.set("https://github.com/hbmartin/")
+            }
+        }
+        scm {
+            url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/")
+            connection.set("scm:git:git://github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
+            developerConnection.set("scm:git:ssh://git@github.com/uhbmartin/objective-sdk-kotlin-multiplatform.git")
+        }
+    }
+}

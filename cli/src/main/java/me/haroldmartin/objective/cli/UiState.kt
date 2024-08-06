@@ -15,7 +15,12 @@ data class UiState(
         Dialog(null),
         ;
 
+        // n.b. non navigable entries are those with a null displayName
+        // these MUST come last in the list
+
         companion object {
+            val navEntries = entries.filter { it.displayName != null }
+
             fun fromUiState(uiState: ScreenUiState): Screen =
                 when (uiState) {
                     is IndexesListScreenUiState -> Indexes
@@ -47,7 +52,7 @@ data class IndexesListScreenUiState(
     val items: List<IndexItem>? = null,
     override val selectedRow: Int? = null,
     override val count: Int? = items?.size,
-    override val commonInfo: String = "[s]earch, [r]efresh, [d]elete, [q]uit",
+    override val commonInfo: String = "[r]efresh, [d]elete, [q]uit",
 ) : ListScreenUiState {
     @Immutable
     data class IndexItem(

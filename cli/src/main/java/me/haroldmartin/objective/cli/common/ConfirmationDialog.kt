@@ -11,6 +11,8 @@ import com.jakewharton.mosaic.ui.Column
 import com.jakewharton.mosaic.ui.Row
 import com.jakewharton.mosaic.ui.Text
 
+private const val MSG_LINE_LIMIT = 80
+
 @Composable
 fun ConfirmationDialog(
     title: String,
@@ -21,11 +23,7 @@ fun ConfirmationDialog(
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
-            modifier =
-                modifier
-                    .border(color = borderColor)
-                    .padding(2)
-                    .align(Alignment.Center),
+            modifier = modifier.border(color = borderColor).padding(2).align(Alignment.Center),
         ) {
             Text(
                 title,
@@ -33,7 +31,17 @@ fun ConfirmationDialog(
                 color = titleColor,
             )
             messages.map {
-                Text(if (it.length > 80) it.substring(0, 79) + "…" else it, color = titleColor)
+                Text(
+                    if (it.length > MSG_LINE_LIMIT) {
+                        it.substring(
+                            0,
+                            MSG_LINE_LIMIT - 1,
+                        ) + "…"
+                    } else {
+                        it
+                    },
+                    color = titleColor,
+                )
             }
             Row(modifier = Modifier.align(Alignment.CenterHorizontally).padding(2)) {
                 Text("Press ", color = borderColor)
