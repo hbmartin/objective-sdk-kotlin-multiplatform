@@ -5,6 +5,7 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.jakewharton.mosaic.ui.Color
 
+@Suppress("CompositionLocalAllowlist")
 val LocalColorsPalette: ProvidableCompositionLocal<ColorsPalette> =
     staticCompositionLocalOf { throw IllegalStateException("No colors palette") }
 

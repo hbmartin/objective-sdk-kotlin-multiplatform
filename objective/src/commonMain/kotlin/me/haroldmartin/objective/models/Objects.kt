@@ -14,7 +14,7 @@ data class ObjectContainer(
     @SerialName("date_updated")
     val updatedAt: String?, // TODO: datetime
     @SerialName("object")
-    var objectData: JsonObject?,
+    val objectData: JsonObject?,
 )
 
 @Serializable

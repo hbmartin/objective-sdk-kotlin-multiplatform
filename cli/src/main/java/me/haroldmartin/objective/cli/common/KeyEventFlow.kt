@@ -47,46 +47,44 @@ val keyEventFlow: Flow<KeyEvent> =
                                     }
                                 } else {
                                     when (thirdInputChar) {
-                                        '1' ->
-                                            when (fourthInputChar) {
-                                                '5' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F5))
-                                                }
-                                                '7' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F6))
-                                                }
-                                                '8' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F7))
-                                                }
-                                                '9' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F8))
-                                                }
-                                                else -> emit(KeyEvent(Key.Unknown))
+                                        '1' -> when (fourthInputChar) {
+                                            '5' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F5))
                                             }
-                                        '2' ->
-                                            when (fourthInputChar) {
-                                                '0' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F9))
-                                                }
-                                                '1' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F10))
-                                                }
-                                                '3' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F11))
-                                                }
-                                                '4' -> {
-                                                    terminalReader.read()
-                                                    emit(KeyEvent(Key.F12))
-                                                }
-                                                else -> emit(KeyEvent(Key.Unknown))
+                                            '7' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F6))
                                             }
+                                            '8' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F7))
+                                            }
+                                            '9' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F8))
+                                            }
+                                            else -> emit(KeyEvent(Key.Unknown))
+                                        }
+                                        '2' -> when (fourthInputChar) {
+                                            '0' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F9))
+                                            }
+                                            '1' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F10))
+                                            }
+                                            '3' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F11))
+                                            }
+                                            '4' -> {
+                                                terminalReader.read()
+                                                emit(KeyEvent(Key.F12))
+                                            }
+                                            else -> emit(KeyEvent(Key.Unknown))
+                                        }
                                         else -> emit(KeyEvent(Key.Unknown))
                                     }
                                 }

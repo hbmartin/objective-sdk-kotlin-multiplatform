@@ -1,5 +1,6 @@
 package me.haroldmartin.objective.cli.stores
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ class IndexesStore(
     private val client = ObjectiveClient(objectiveKey)
     private val stateFlow = MutableStateFlow(IndexesListScreenUiState())
     val state = stateFlow.asStateFlow()
-    val selectedIdAndStatuses: Pair<String, List<String>>?
+    val selectedIdAndStatuses: Pair<String, ImmutableList<String>>?
         get() =
             stateFlow.value.selectedRow?.let { selectedRow ->
                 stateFlow.value.items?.get(selectedRow)?.let {

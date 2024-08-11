@@ -32,8 +32,9 @@ import me.haroldmartin.objective.cli.screens.IndexesScreen
 import me.haroldmartin.objective.cli.screens.ObjectsScreen
 
 // subtraction is necessary, because there is a line with a cursor at the bottom, which moves up all the content
-const val REDUCE_HEIGHT = 3
+private const val REDUCE_HEIGHT = 3
 
+@Suppress("ModifierMissing")
 @Composable
 fun App(
     viewModel: ViewModel,
@@ -49,25 +50,22 @@ fun App(
                 .background(LocalColorsPalette.current.mainBg),
         ) {
             when (uiState.screenUiState) {
-                is IndexesListScreenUiState ->
-                    IndexesScreen(
-                        uiState.screenUiState as IndexesListScreenUiState,
-                        modifier = Modifier.padding(bottom = 1),
-                    )
-                is ObjectsListScreenUiState ->
-                    ObjectsScreen(
-                        uiState.screenUiState as ObjectsListScreenUiState,
-                        modifier = Modifier.padding(bottom = 1),
-                    )
+                is IndexesListScreenUiState -> IndexesScreen(
+                    uiState.screenUiState as IndexesListScreenUiState,
+                    modifier = Modifier.padding(bottom = 1),
+                )
+                is ObjectsListScreenUiState -> ObjectsScreen(
+                    uiState.screenUiState as ObjectsListScreenUiState,
+                    modifier = Modifier.padding(bottom = 1),
+                )
 
-                is DialogScreenUiState ->
-                    ConfirmationDialog(
-                        title = (uiState.screenUiState as DialogScreenUiState).title,
-                        messages = (uiState.screenUiState as DialogScreenUiState).messages,
-                        titleColor = LocalColorsPalette.current.callsTitleFg,
-                        borderColor = LocalColorsPalette.current.dangerBg,
-                        modifier = Modifier.padding(horizontal = 1),
-                    )
+                is DialogScreenUiState -> ConfirmationDialog(
+                    title = (uiState.screenUiState as DialogScreenUiState).title,
+                    messages = (uiState.screenUiState as DialogScreenUiState).messages,
+                    titleColor = LocalColorsPalette.current.callsTitleFg,
+                    borderColor = LocalColorsPalette.current.dangerBg,
+                    modifier = Modifier.padding(horizontal = 1),
+                )
             }
             BottomStatusBar(
                 currentScreen = UiState.Screen.fromUiState(uiState.screenUiState),

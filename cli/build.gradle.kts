@@ -34,4 +34,6 @@ dependencies {
     implementation("org.jline:jline:3.26.3")
     implementation("com.jakewharton.mosaic:mosaic-runtime:0.13.0")
     implementation("ch.qos.logback:logback-classic:1.5.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
+    detektPlugins("io.nlopez.compose.rules:detekt:0.4.10")
 }

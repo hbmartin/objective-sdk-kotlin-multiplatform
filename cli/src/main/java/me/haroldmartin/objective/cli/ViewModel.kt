@@ -1,5 +1,8 @@
 package me.haroldmartin.objective.cli
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +28,9 @@ class ViewModel(
     private val currentScreenFlow = MutableStateFlow(UiState.Screen.Indexes)
     private val indexesStore = IndexesStore(coroutineScope, objectiveApiKey)
     private val objectsStore = ObjectsStore(coroutineScope, objectiveApiKey)
-    private val dialogScreenFlow = MutableStateFlow(DialogScreenUiState("", emptyList()))
+    private val dialogScreenFlow = MutableStateFlow(DialogScreenUiState("", persistentListOf()))
+
+    @Suppress("AvoidVarsExceptWithDelegate")
     private var dialogScreenPreviousState: UiState.Screen = UiState.Screen.Indexes
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -100,14 +105,14 @@ class ViewModel(
     fun onDPress() {
         when (currentScreenFlow.value) {
             UiState.Screen.Indexes -> {
-                indexesStore.selectedIdAndStatuses?.let { (id, statuses) ->
+                indexesStore.selectedIdAndStatuses?.also { (id, statuses) ->
                     dialogScreenPreviousState = UiState.Screen.Indexes
                     dialogScreenFlow.value = DialogScreenUiState("Proceed to delete index `$id` ?", statuses)
                     currentScreenFlow.value = UiState.Screen.Dialog
                 }
             }
             UiState.Screen.Objects -> {
-                objectsStore.selectedIdAndContent?.let { (id, content) ->
+                objectsStore.selectedIdAndContent?.also { (id, content) ->
                     dialogScreenPreviousState = UiState.Screen.Objects
                     dialogScreenFlow.value = DialogScreenUiState(
                         title = "Proceed to delete object `$id` ?",
@@ -167,7 +172,7 @@ class ViewModel(
     }
 }
 
-private fun JsonObject?.toStringList(): List<String> =
+private fun JsonObject?.toStringList(): ImmutableList<String> =
     this
         ?.entries
         ?.mapIndexed { index, (k, v) ->
@@ -177,3 +182,4 @@ private fun JsonObject?.toStringList(): List<String> =
         }?.let {
             listOf("{") + it + listOf("}")
         }.orEmpty()
+        .toImmutableList()
