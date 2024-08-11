@@ -1053,3 +1053,31 @@ formatting:
     autoCorrect: true
     indentSize: 4
     maxLineLength: 120
+
+HbmartinRuleSet:
+  AvoidFirstOrLastOnList:
+    active: true
+  AvoidMutableCollections:
+    active: true
+  AvoidVarsExceptWithDelegate:
+    active: true
+    allowedDelegates:
+      - 'remember\w*'
+      - 'mutableState\w*'
+  DontForceCast:
+    active: true
+    excludes: [ '**/cli/src/main/java/me/haroldmartin/objective/cli/App.kt' ]
+  MutableTypeShouldBePrivate:
+    active: true
+  NoNotNullOperator:
+    active: true
+  NoVarsInConstructor:
+    active: true
+  NoCallbacksInFunctions:
+    active: true
+    ignoreAnnotated: ['Composable']
+    allowExtensions: true
+    allowReceivers: true
+    allowInline: false
+  WhenBranchSingleLineOrBraces:
+    active: true

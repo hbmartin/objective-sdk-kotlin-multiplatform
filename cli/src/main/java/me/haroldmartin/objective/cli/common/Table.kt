@@ -61,8 +61,8 @@ data class TableConfig<T>(
 fun <T> Table(
     tableData: TableData<T>,
     tableConfig: TableConfig<T>,
-    selectedRow: Int? = null,
     modifier: Modifier = Modifier,
+    selectedRow: Int? = null,
 ) {
     Box(
         modifier = modifier
@@ -73,6 +73,7 @@ fun <T> Table(
 
                 val lastRange = tableData.items.takeLast(height - 1)
 
+                @Suppress("AvoidVarsExceptWithDelegate")
                 var column = 0
                 tableConfig.columnConfigs.forEachIndexed { columnIndex, columnConfig ->
                     val columnWidth = widths[columnIndex]

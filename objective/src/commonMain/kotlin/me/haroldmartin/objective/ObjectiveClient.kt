@@ -1,6 +1,7 @@
 package me.haroldmartin.objective
 
 import io.ktor.client.call.body
+import io.ktor.http.isSuccess
 import kotlinx.serialization.json.JsonObject
 import me.haroldmartin.objective.models.Id
 import me.haroldmartin.objective.models.Index
@@ -20,15 +21,18 @@ class ObjectiveClient(
 ) {
     private val httpClient = ApiClient(API_BASE_URL, apiKey)
 
-    suspend fun getIndexes(): List<Index> = httpClient.get("indexes").body<Indexes>().indexes
+    suspend fun getIndexes(): List<Index> =
+        httpClient.get("indexes").body<Indexes>().indexes
 
-    suspend fun getIndexStatus(indexId: IndexId): IndexStatus = httpClient.get("indexes/$indexId/status").body<IndexStatusResponse>().status
+    suspend fun getIndexStatus(indexId: IndexId): IndexStatus =
+        httpClient.get("indexes/$indexId/status").body<IndexStatusResponse>().status
 
-    suspend fun createIndex(indexConfiguration: IndexConfiguration): IndexId = httpClient.post("indexes", indexConfiguration).body<Id>().id
+    suspend fun createIndex(indexConfiguration: IndexConfiguration): IndexId =
+        httpClient.post("indexes", indexConfiguration).body<Id>().id
 
     suspend fun deleteIndex(indexId: IndexId): Boolean =
         httpClient.delete("indexes/$indexId").let {
-            return it.status.value in 200..299
+            return it.status.isSuccess()
         }
 
     // TODO: search
@@ -52,6 +56,6 @@ class ObjectiveClient(
 
     suspend fun deleteObject(objectId: ObjectId): Boolean =
         httpClient.delete("objects/$objectId").let {
-            return it.status.value in 200..299
+            return it.status.isSuccess()
         }
 }

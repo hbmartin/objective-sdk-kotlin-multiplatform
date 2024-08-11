@@ -68,9 +68,7 @@ private class BorderModifier(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as BorderModifier
+        if (other !is BorderModifier) return false
 
         if (verticalStart != other.verticalStart) return false
         if (topStart != other.topStart) return false
@@ -86,6 +84,7 @@ private class BorderModifier(
     }
 
     override fun hashCode(): Int {
+        @Suppress("AvoidVarsExceptWithDelegate")
         var result = verticalStart.hashCode()
         result = 31 * result + topStart.hashCode()
         result = 31 * result + horizontalTop.hashCode()

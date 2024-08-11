@@ -10,20 +10,21 @@ import com.jakewharton.mosaic.ui.Color
 import com.jakewharton.mosaic.ui.Column
 import com.jakewharton.mosaic.ui.Row
 import com.jakewharton.mosaic.ui.Text
+import kotlinx.collections.immutable.ImmutableList
 
 private const val MSG_LINE_LIMIT = 80
 
 @Composable
 fun ConfirmationDialog(
     title: String,
-    messages: List<String>,
+    messages: ImmutableList<String>,
     titleColor: Color,
     borderColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
-            modifier = modifier.border(color = borderColor).padding(2).align(Alignment.Center),
+            modifier = Modifier.border(color = borderColor).padding(2).align(Alignment.Center),
         ) {
             Text(
                 title,

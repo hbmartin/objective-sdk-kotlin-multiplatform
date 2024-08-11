@@ -26,7 +26,7 @@ class ApiClient(
     val ioDispatcher: CoroutineContext = kotlinx.coroutines.Dispatchers.IO,
 ) {
     val httpClient =
-        HttpClient(engine = httpEngine) {
+        HttpClient(engine = HTTP_ENGINE) {
 //            install(Logging) {
 //                level = LogLevel.ALL
 //                logger =
