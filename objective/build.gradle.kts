@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -44,7 +45,10 @@ kotlin {
 }
 
 mavenPublishing {
-    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
+    publishToMavenCentral(SonatypeHost.S01)
+    signAllPublications()
+
+    coordinates("me.haroldmartin", "objective-sdk", "0.0.1")
 
     pom {
         name.set("Objective SDK")
@@ -68,7 +72,7 @@ mavenPublishing {
         scm {
             url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/")
             connection.set("scm:git:git://github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
-            developerConnection.set("scm:git:ssh://git@github.com/uhbmartin/objective-sdk-kotlin-multiplatform.git")
+            developerConnection.set("scm:git:ssh://git@github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
         }
     }
 }
