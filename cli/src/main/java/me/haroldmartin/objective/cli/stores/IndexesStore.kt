@@ -47,7 +47,11 @@ class IndexesStore(
         }
 
     fun refresh() {
-        val indexId = selectedId ?: return
+        val indexId = selectedId ?: run {
+            stateFlow.value = stateFlow.value.copy(items = null)
+            load()
+            return
+        }
         stateFlow.value =
             stateFlow.value.copy(items = updateStatuses(indexId, null))
         coroutineScope.launch {
