@@ -45,8 +45,7 @@ kotlin {
 }
 
 mavenPublishing {
-
-    publishToMavenCentral(SonatypeHost.DEFAULT)
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
     coordinates("me.haroldmartin", "objective-sdk", "0.0.1")
