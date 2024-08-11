@@ -15,11 +15,10 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :objective:assemble
       - name: Publish Library
         run: |
-          ./gradlew publishAndReleaseToMavenCentral --no-daemon --no-parallel
-          ./gradlew closeAndReleaseRepository
+          ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
+          ./gradlew :objective:releaseRepository
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
