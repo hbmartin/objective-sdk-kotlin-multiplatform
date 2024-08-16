@@ -118,11 +118,19 @@ data class FieldConfig(
 
 @Serializable
 data class IndexStatusResponse(
-    val status: IndexStatus,
+    val status: IndexStatuses,
 )
 
 @Serializable
-data class IndexStatus(
+enum class IndexStatus {
+    UPLOADED,
+    PROCESSING,
+    READY,
+    ERROR,
+}
+
+@Serializable
+data class IndexStatuses(
     @SerialName("UPLOADED")
     val uploaded: Int,
     @SerialName("PROCESSING")
@@ -131,4 +139,9 @@ data class IndexStatus(
     val ready: Int,
     @SerialName("ERROR")
     val error: Int,
-)
+) : Map<IndexStatus, Int> by mapOf(
+        IndexStatus.UPLOADED to uploaded,
+        IndexStatus.PROCESSING to processing,
+        IndexStatus.READY to ready,
+        IndexStatus.ERROR to error,
+    )

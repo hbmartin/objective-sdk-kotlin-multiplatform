@@ -13,7 +13,6 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -23,19 +22,10 @@ import kotlin.coroutines.CoroutineContext
 class ApiClient(
     host: String,
     apiKey: String,
-    val ioDispatcher: CoroutineContext = kotlinx.coroutines.Dispatchers.IO,
+    val ioDispatcher: CoroutineContext,
 ) {
     val httpClient =
         HttpClient(engine = HTTP_ENGINE) {
-//            install(Logging) {
-//                level = LogLevel.ALL
-//                logger =
-//                    object : Logger {
-//                        override fun log(message: String) {
-//                            println(message)
-//                        }
-//                    }
-//            }
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -58,9 +48,9 @@ class ApiClient(
             }
         }
 
-    suspend inline fun <reified T> post(
+    suspend inline fun post(
         path: String,
-        requestBody: T,
+        requestBody: Any,
     ): HttpResponse =
         withContext(ioDispatcher) {
             httpClient
@@ -69,9 +59,9 @@ class ApiClient(
                 }.body()
         }
 
-    suspend inline fun <reified T> put(
+    suspend inline fun put(
         path: String,
-        requestBody: T,
+        requestBody: Any,
     ): HttpResponse =
         withContext(ioDispatcher) {
             httpClient.put(path) {
