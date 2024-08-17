@@ -20,15 +20,15 @@ data class ObjectContainer<T : Any?>(
 data class IndexIdStatus(
     @SerialName("id")
     val indexId: String,
-    val status: String,
+    val status: IndexStatus,
 )
 
 @Serializable
 data class IndexesStatus(
     val indexes: List<IndexIdStatus>,
 ) : Map<String, IndexStatus> by indexes.associate(transform = {
-        it.indexId to IndexStatus.valueOf(it.status)
-    })
+    it.indexId to it.status
+})
 
 @Serializable
 data class ObjectStatusContainer<T>(

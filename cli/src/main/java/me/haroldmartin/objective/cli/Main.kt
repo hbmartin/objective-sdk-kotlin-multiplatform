@@ -62,10 +62,10 @@ fun runUi(args: Array<String>) = when {
     }
 }
 
-
 private fun parseArgsForObjectiveKey(args: Array<String>): String {
     val keyIndex = args.indexOf("-k")
     if (keyIndex < 0 || keyIndex >= args.lastIndex) {
+        @Suppress("TooGenericExceptionThrown")
         throw RuntimeException("No objective key")
     }
     return args[keyIndex + 1]

@@ -7,8 +7,8 @@ import me.haroldmartin.objective.models.Id
 import me.haroldmartin.objective.models.Index
 import me.haroldmartin.objective.models.IndexConfiguration
 import me.haroldmartin.objective.models.IndexId
-import me.haroldmartin.objective.models.IndexStatuses
 import me.haroldmartin.objective.models.IndexStatusResponse
+import me.haroldmartin.objective.models.IndexStatuses
 import me.haroldmartin.objective.models.Indexes
 import me.haroldmartin.objective.models.ObjectContainer
 import me.haroldmartin.objective.models.ObjectId
@@ -58,8 +58,10 @@ class ObjectiveClient(
         httpClient.post("objects", jsonObject).body<Id>().id
 
     // TODO: URL encode objectId
-    suspend fun <T : Any> upsertObject(objectId: ObjectId, jsonObject: T): ObjectId =
-        httpClient.put("objects/$objectId", jsonObject).body<Id>().id
+    suspend fun <T : Any> upsertObject(
+        objectId: ObjectId,
+        jsonObject: T,
+    ): ObjectId = httpClient.put("objects/$objectId", jsonObject).body<Id>().id
 
     suspend fun deleteObject(objectId: ObjectId): Boolean =
         httpClient.delete("objects/$objectId").let {

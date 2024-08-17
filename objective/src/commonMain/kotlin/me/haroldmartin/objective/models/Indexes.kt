@@ -140,8 +140,8 @@ data class IndexStatuses(
     @SerialName("ERROR")
     val error: Int,
 ) : Map<IndexStatus, Int> by mapOf(
-        IndexStatus.UPLOADED to uploaded,
-        IndexStatus.PROCESSING to processing,
-        IndexStatus.READY to ready,
-        IndexStatus.ERROR to error,
-    )
+    IndexStatus.UPLOADED to uploaded,
+    IndexStatus.PROCESSING to processing,
+    IndexStatus.READY to ready,
+    IndexStatus.ERROR to error,
+)
