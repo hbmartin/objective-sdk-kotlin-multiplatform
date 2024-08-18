@@ -39,7 +39,15 @@ class ObjectiveClient(
     // TODO: search
 
     suspend inline fun <reified T> getObject(objectId: ObjectId): ObjectStatusContainer<T> =
-        httpClient.get("objects/$objectId").body<ObjectStatusContainer<T>>()
+        httpClient
+            .get("objects/$objectId")
+            .let {
+                if (it.status.isSuccess()) {
+                    it.body<ObjectStatusContainer<T>>()
+                } else {
+                    throw ObjectiveApiError(it.status)
+                }
+            }
 
     suspend inline fun <reified T : Any?> getObjects(
         includeObject: Boolean = false,

@@ -8,7 +8,11 @@ fun getObject(
     objectiveKey: String,
     objectId: String,
 ) = runBlocking {
-    println(ObjectiveClient(objectiveKey).getObject<JsonObject>(objectId))
+    val obj = ObjectiveClient(objectiveKey).getObject<JsonObject>(objectId)
+    println(obj.objectData)
+    for ((key, value) in obj.status) {
+        println("$key => $value")
+    }
 }
 
 fun listObjects(objectiveKey: String) =
