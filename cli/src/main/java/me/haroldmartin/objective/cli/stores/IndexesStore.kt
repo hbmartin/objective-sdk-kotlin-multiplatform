@@ -33,7 +33,7 @@ class IndexesStore(
                         .map {
                             IndexesListScreenUiState.IndexItem(
                                 id = it.id,
-                                updatedAt = it.updatedAt,
+                                updatedAt = it.updatedAt.toString(),
                             )
                         },
                 )

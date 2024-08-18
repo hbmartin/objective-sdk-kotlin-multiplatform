@@ -20,9 +20,21 @@ fun listObjects(objectiveKey: String) =
         ObjectiveClient(objectiveKey)
             .getObjects<JsonObject>(includeObject = true, limit = 20)
             .forEach {
-                println("${it.id} => ${it.objectData}")
+                println("${it.id} (${it.updatedAt}):")
+                println(it.objectData)
             }
     }
+
+fun getIndex(
+    objectiveKey: String,
+    indexId: String,
+) = runBlocking {
+    val client = ObjectiveClient(objectiveKey)
+    val status = client.getIndexStatus(indexId)
+    status.forEach { (key, value) ->
+        println("$key => $value")
+    }
+}
 
 fun listIndexes(objectiveKey: String) =
     runBlocking {
@@ -31,9 +43,9 @@ fun listIndexes(objectiveKey: String) =
             @Suppress("TooGenericExceptionCaught")
             try {
                 val status = client.getIndexStatus(it.id)
-                println("${it.id} => $status")
+                println("${it.id} (${it.updatedAt}) => $status")
             } catch (e: Exception) {
-                println("${it.id} => ${e.message}")
+                println("${it.id} (${it.updatedAt}) => ${e.message}")
             }
         }
     }
