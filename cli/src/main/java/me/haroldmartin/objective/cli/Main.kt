@@ -13,7 +13,8 @@ private const val HELP_MESSAGE = """
         -h, --help      Show this help message
 """
 
-fun main(args: Array<String>) =
+fun main(args: Array<String>) {
+    System.setProperty("slf4j.internal.verbosity", "ERROR")
     when {
         args.isEmpty() -> {
             println("EMPTY ARGS")
@@ -26,13 +27,12 @@ fun main(args: Array<String>) =
         args[0].startsWith("sk_") -> runUi(arrayOf("-k") + args)
         args[0] == "-k" -> runUi(args)
         else -> {
-            println("NON EMPTY ARGS")
             System.getenv("OBJECTIVE_KEY")?.let {
-                println((arrayOf("-k", it) + args).joinToString())
                 runUi(arrayOf("-k", it) + args)
             } ?: println("Make sure you have a key\n" + HELP_MESSAGE)
         }
     }
+}
 
 fun runUi(args: Array<String>) =
     when {
@@ -55,7 +55,10 @@ fun runUi(args: Array<String>) =
         }
         args[2].startsWith("i") -> {
             val objectiveKey = parseArgsForObjectiveKey(args)
-            listIndexes(objectiveKey)
+            args.getOrNull(3)?.let { objectId ->
+                getIndex(objectiveKey, objectId)
+            } ?: listIndexes(objectiveKey)
+
             exitProcess(0)
         }
         else -> {

@@ -1,5 +1,6 @@
 package me.haroldmartin.objective.models
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,9 +10,9 @@ typealias ObjectId = String
 data class ObjectContainer<T : Any?>(
     val id: ObjectId,
     @SerialName("date_created")
-    val createdAt: String?, // TODO: datetime
+    val createdAt: Instant?,
     @SerialName("date_updated")
-    val updatedAt: String?, // TODO: datetime
+    val updatedAt: Instant?,
     @SerialName("object")
     val objectData: T?,
 )

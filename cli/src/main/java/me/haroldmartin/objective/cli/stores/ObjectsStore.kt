@@ -36,7 +36,7 @@ class ObjectsStore(
                         .map {
                             ObjectsListScreenUiState.ObjectItem(
                                 id = it.id,
-                                updatedAt = it.updatedAt ?: "?",
+                                updatedAt = it.updatedAt.toString(),
                                 objectData = it.objectData,
                             )
                         },

@@ -1,5 +1,6 @@
 package me.haroldmartin.objective.models
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,9 +8,9 @@ import kotlinx.serialization.Serializable
 data class Index(
     val id: String,
     @SerialName("created_at")
-    val createdAt: String, // TODO: datetime
+    val createdAt: Instant,
     @SerialName("updated_at")
-    val updatedAt: String, // TODO: datetime
+    val updatedAt: Instant,
 )
 
 @Serializable
@@ -70,7 +71,7 @@ data class IndexType(
     val name: IndexTypeName = IndexTypeName.TEXT,
     val highlights: Highlights? = null,
     val finetuning: Finetuning? = null,
-    val version: String? = null, // TODO: default datetime
+    val version: String? = null,
 )
 
 @Serializable
