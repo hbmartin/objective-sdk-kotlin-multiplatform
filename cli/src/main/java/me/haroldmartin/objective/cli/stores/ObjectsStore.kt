@@ -29,7 +29,7 @@ class ObjectsStore(
     fun load() =
         coroutineScope.launch {
             stateFlow.value = ObjectsListScreenUiState(items = null)
-            val objects = client.getObjects(includeObject = true, limit = 20)
+            val objects = client.getObjects<JsonObject>(includeObject = true, limit = 20)
             stateFlow.value =
                 ObjectsListScreenUiState(
                     objects

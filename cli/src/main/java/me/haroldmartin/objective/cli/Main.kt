@@ -3,33 +3,77 @@ package me.haroldmartin.objective.cli
 import com.jakewharton.mosaic.runMosaicBlocking
 import kotlinx.coroutines.awaitCancellation
 import me.haroldmartin.objective.cli.palletes.parseArgsForColorsPalette
-import java.lang.RuntimeException
+import kotlin.system.exitProcess
+
+private const val HELP_MESSAGE = """
+    Usage: objective-cli [-k OBJECTIVE_KEY] [COMMAND]
+    
+    Commands:
+        sk_<COMMAND>    Run a specific command
+        -h, --help      Show this help message
+"""
 
 fun main(args: Array<String>) =
-    runMosaicBlocking {
-        val colorsPalette = parseArgsForColorsPalette(args)
-        val viewModel = ViewModel(this, getObjectiveApiKey(args))
-
-        setContent {
-            App(viewModel, colorsPalette)
+    when {
+        args.isEmpty() -> {
+            println("EMPTY ARGS")
+            System.getenv("OBJECTIVE_KEY")?.let {
+                runUi(arrayOf("-k", it))
+            } ?: println(HELP_MESSAGE)
         }
 
-        awaitCancellation()
+        args[0] == "-h" || args[0] == "---help" -> println(HELP_MESSAGE)
+        args[0].startsWith("sk_") -> runUi(arrayOf("-k") + args)
+        args[0] == "-k" -> runUi(args)
+        else -> {
+            println("NON EMPTY ARGS")
+            System.getenv("OBJECTIVE_KEY")?.let {
+                println((arrayOf("-k", it) + args).joinToString())
+                runUi(arrayOf("-k", it) + args)
+            } ?: println("Make sure you have a key\n" + HELP_MESSAGE)
+        }
     }
 
-@Suppress("TooGenericExceptionThrown")
-fun getObjectiveApiKey(args: Array<String>): String =
-    parseArgsForObjectiveKey(args) ?: System.getenv("OBJECTIVE_KEY") ?: run {
-        throw RuntimeException(
-            "Objective API key not found. Please provide it via the OBJECTIVE_KEY " +
-                "environment variable or the -k command line argument.",
-        )
+fun runUi(args: Array<String>) =
+    when {
+        args.size == 2 || (args.size == 4 && args.indexOf("-c") != -1) -> runMosaicBlocking {
+            val colorsPalette = parseArgsForColorsPalette(args)
+            val viewModel = ViewModel(this, parseArgsForObjectiveKey(args))
+
+            setContent {
+                App(viewModel, colorsPalette)
+            }
+
+            awaitCancellation()
+        }
+        args[2].startsWith("o") -> {
+            val objectiveKey = parseArgsForObjectiveKey(args)
+            args.getOrNull(3)?.let { objectId ->
+                getObject(objectiveKey, objectId)
+            } ?: listObjects(objectiveKey)
+            exitProcess(0)
+        }
+        args[2].startsWith("i") -> {
+            val objectiveKey = parseArgsForObjectiveKey(args)
+            listIndexes(objectiveKey)
+            exitProcess(0)
+        }
+        else -> {
+            println("Unknown command: ${args[0]}\n$HELP_MESSAGE")
+        }
     }
 
-private fun parseArgsForObjectiveKey(args: Array<String>): String? {
+private fun parseArgsForObjectiveKey(args: Array<String>): String {
     val keyIndex = args.indexOf("-k")
     if (keyIndex < 0 || keyIndex >= args.lastIndex) {
-        return null
+        throw NoObjectiveApiKeyError
     }
     return args[keyIndex + 1]
+}
+
+object NoObjectiveApiKeyError : Error(
+    "No Objective API key found in OBJECTIVE_KEY env var or -k flag",
+) {
+    @Suppress("UnusedPrivateMember")
+    private fun readResolve(): Any = NoObjectiveApiKeyError
 }

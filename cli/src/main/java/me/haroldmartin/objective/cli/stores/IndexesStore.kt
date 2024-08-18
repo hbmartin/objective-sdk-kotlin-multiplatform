@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.haroldmartin.objective.ObjectiveClient
 import me.haroldmartin.objective.cli.IndexesListScreenUiState
-import me.haroldmartin.objective.models.IndexStatus
+import me.haroldmartin.objective.models.IndexStatuses
 
 class IndexesStore(
     private val coroutineScope: CoroutineScope,
@@ -64,7 +64,7 @@ class IndexesStore(
 
     private fun updateStatuses(
         indexId: String,
-        status: IndexStatus?,
+        status: IndexStatuses?,
     ) = stateFlow.value.items?.map {
         if (it.id == indexId) {
             it.copy(
