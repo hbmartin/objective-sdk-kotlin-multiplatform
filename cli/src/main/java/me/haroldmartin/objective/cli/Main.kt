@@ -71,7 +71,9 @@ private fun parseArgsForObjectiveKey(args: Array<String>): String {
     return args[keyIndex + 1]
 }
 
-object NoObjectiveApiKeyError : Error() {
+object NoObjectiveApiKeyError : Error(
+    "No Objective API key found in OBJECTIVE_KEY env var or -k flag",
+) {
+    @Suppress("UnusedPrivateMember")
     private fun readResolve(): Any = NoObjectiveApiKeyError
-    override val message: String = "No Objective API key found in OBJECTIVE_KEY env var or -k flag"
 }

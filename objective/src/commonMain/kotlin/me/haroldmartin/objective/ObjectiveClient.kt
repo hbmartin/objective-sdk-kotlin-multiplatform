@@ -1,6 +1,7 @@
 package me.haroldmartin.objective
 
 import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.IO
 import me.haroldmartin.objective.models.Id
@@ -27,27 +28,24 @@ class ObjectiveClient(
     suspend fun getIndexes(): List<Index> =
         httpClient.get("indexes").body<Indexes>().indexes
 
+    // TODO: URL encode indexId
     suspend fun getIndexStatus(indexId: IndexId): IndexStatuses =
         httpClient.get("indexes/$indexId/status").body<IndexStatusResponse>().status
 
     suspend fun createIndex(indexConfiguration: IndexConfiguration): IndexId =
         httpClient.post("indexes", indexConfiguration).body<Id>().id
 
+    // TODO: URL encode indexId
     suspend fun deleteIndex(indexId: IndexId): Boolean =
         httpClient.delete("indexes/$indexId").status.isSuccess()
 
     // TODO: search
 
+    // TODO: URL encode objectId
     suspend inline fun <reified T> getObject(objectId: ObjectId): ObjectStatusContainer<T> =
         httpClient
             .get("objects/$objectId")
-            .let {
-                if (it.status.isSuccess()) {
-                    it.body<ObjectStatusContainer<T>>()
-                } else {
-                    throw ObjectiveApiError(it.status)
-                }
-            }
+            .bodyOrThrow<ObjectStatusContainer<T>>()
 
     suspend inline fun <reified T : Any?> getObjects(
         includeObject: Boolean = false,
@@ -75,4 +73,10 @@ class ObjectiveClient(
         httpClient.delete("objects/$objectId").let {
             return it.status.isSuccess()
         }
+}
+
+suspend inline fun <reified T> HttpResponse.bodyOrThrow(): T = if (this.status.isSuccess()) {
+    this.body<T>()
+} else {
+    throw ObjectiveApiError(this.status)
 }
