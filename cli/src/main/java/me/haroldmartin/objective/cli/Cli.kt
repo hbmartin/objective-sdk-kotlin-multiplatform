@@ -49,3 +49,16 @@ fun listIndexes(objectiveKey: String) =
             }
         }
     }
+
+fun searchIndex(
+    objectiveKey: String,
+    indexId: String,
+    query: String,
+    objectFields: String? = null,
+) = runBlocking {
+    val client = ObjectiveClient(objectiveKey)
+    client.search<JsonObject>(indexId, query, objectFields = objectFields).results.forEach {
+        println(it.id)
+        println(it.objectData)
+    }
+}

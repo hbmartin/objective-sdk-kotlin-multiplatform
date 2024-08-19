@@ -29,6 +29,8 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
+            implementation("net.thauvin.erik.urlencoder:urlencoder-lib:1.5.0")
+
             api(libs.ktor.serialization.kotlinx.json)
             api(libs.kotlinx.datetime)
         }
@@ -49,11 +51,11 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.0.1")
+    coordinates("me.haroldmartin", "objective-cli", "0.1.0")
 
     pom {
-        name.set("Objective SDK")
-        description.set("Client SDK for Objective Inc. object, indexing, and search.")
+        name.set("Objective CLI")
+        description.set("CLI / TUI for Objective Inc. object, indexing, and search.")
         inceptionYear.set("2024")
         url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform")
         licenses {

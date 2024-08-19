@@ -47,4 +47,14 @@ data class ObjectsResponse<T : Any?>(
     val objects: List<ObjectContainer<T>>,
     val pagination: Pagination,
     val metadata: Metadata? = null,
-)
+) : Map<ObjectId, T?> by objects.associate(transform = {
+    it.id to it.objectData
+})
+
+@Serializable
+data class SearchResultsResponse<T : Any?>(
+    val results: List<ObjectContainer<T>>,
+    val pagination: Pagination,
+) : Map<ObjectId, T?> by results.associate(transform = {
+    it.id to it.objectData
+})

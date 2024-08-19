@@ -1,22 +1,34 @@
 # Objective Kotlin Multiplatform SDK
 
-[![PR Checks](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/pre-merge.yml/badge.svg)](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/pre-merge.yml)
-[![CodeFactor](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform/badge)](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hbmartin_objective-sdk-kotlin-multiplatform&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=hbmartin_intellij-build-webhook-notifier)
+[![Detekt](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml)[![CodeFactor](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform/badge)](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hbmartin_objective-sdk-kotlin-multiplatform&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=hbmartin_objective-sdk-kotlin-multiplatform)
 [![Documentation](https://img.shields.io/badge/Documentation-3d3d41?logo=kotlin)](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/index.html)
 [![Maven Central Version](https://img.shields.io/maven-central/v/me.haroldmartin/objective-sdk-kotlin-multiplatform)](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk-kotlin-multiplatform)
 
 ## Quick Start
 
-### Add a dependency to your `build.gradle.kts` file:
+### Run the CLI / TUI
 
-To add the dependency to non-Gradle projects see the snippets on [Maven Central](https://search.maven.org/artifact/me.haroldmartin/objective-sdk-kotlin-multiplatform).
+Clone this repository and run the CLI / TUI:
 
-```kotlin
-implementation("me.haroldmartin:objective-sdk:0.0.1")
+```shell
+git clone https://github.com/hbmartin/objective-sdk-kotlin-multiplatform.git
+cd objective-sdk-kotlin-multiplatform
+./gradlew :cli:assemble
+# Set your API key
+export OBJECTIVE_KEY=sk_...
+java -jar cli/build/libs/cli.jar
 ```
 
-This is published to maven central so if gradle cannot find the artifact check that `mavenCentral()` is in your `repositories`.
+### Add a dependency to your `build.gradle.kts` file:
+
+(To add the dependency to non-Gradle projects see the snippets on [Maven Central](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk).)
+
+```kotlin
+implementation("me.haroldmartin:objective-sdk:0.1.0")
+```
+
+If Gradle cannot find the Objective artifact then check that `mavenCentral()` is in your `repositories`.
 
 ### Instantiate the SDK
 
@@ -43,6 +55,12 @@ import kotlinx.serialization.json.JsonObject
 // It is strongly suggested you use nullable types to avoid deserialization errors
 val obj = client.getObject<JsonObject>("objectId")
 ```
+
+## API Documentation
+
+All of the client calls available are [documented here](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/objective/me.haroldmartin.objective/-objective-client/index.html) 
+and the model used in responses are documented for [index calls](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/objective/me.haroldmartin.objective.models.index/index.html) 
+and [object calls](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/objective/me.haroldmartin.objective.models.obj/index.html).
 
 ## Contributing
 
