@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.haroldmartin.objective.ObjectiveClient
 import me.haroldmartin.objective.cli.IndexesListScreenUiState
-import me.haroldmartin.objective.models.IndexStatuses
+import me.haroldmartin.objective.models.index.IndexStatuses
 
 class IndexesStore(
     private val coroutineScope: CoroutineScope,
