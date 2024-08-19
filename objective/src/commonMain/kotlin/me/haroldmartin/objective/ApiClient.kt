@@ -19,6 +19,7 @@ import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 
 @OptIn(ExperimentalSerializationApi::class)
+/** @suppress */
 class ApiClient(
     host: String,
     apiKey: String,

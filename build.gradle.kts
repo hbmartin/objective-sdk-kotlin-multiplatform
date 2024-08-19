@@ -12,6 +12,7 @@ subprojects {
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
         detektPlugins("me.haroldmartin:hbmartin-detekt-rules:0.1.6")
+        detektPlugins("com.faire:faire-detekt-rules:0.2.4")
     }
     detekt {
         allRules = true

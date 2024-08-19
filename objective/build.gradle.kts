@@ -25,10 +25,6 @@ kotlin {
         }
     }
 
-    dependencies {
-        detektPlugins(libs.detekt.libraries)
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.ktor.client.content.negotiation)
