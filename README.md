@@ -1,13 +1,12 @@
 # Objective Kotlin Multiplatform SDK
 
-[![Detekt](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml)[![CodeFactor](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform/badge)](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform)
+[![Detekt](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/actions/workflows/lint-and-test.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform/badge)](https://www.codefactor.io/repository/github/hbmartin/objective-sdk-kotlin-multiplatform)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hbmartin_objective-sdk-kotlin-multiplatform&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=hbmartin_objective-sdk-kotlin-multiplatform)
 [![Documentation](https://img.shields.io/badge/Documentation-3d3d41?logo=kotlin)](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/index.html)
-[![Maven Central Version](https://img.shields.io/maven-central/v/me.haroldmartin/objective-sdk-kotlin-multiplatform)](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk-kotlin-multiplatform)
+[![Maven Central Version](https://img.shields.io/maven-central/v/me.haroldmartin/objective-sdk)](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk)
 
-## Quick Start
-
-### Run the CLI / TUI
+## Install and run the CLI / TUI
 
 Clone this repository and run the CLI / TUI:
 
@@ -17,8 +16,11 @@ cd objective-sdk-kotlin-multiplatform
 ./gradlew :cli:assemble
 # Set your API key
 export OBJECTIVE_KEY=sk_...
+java -jar cli/build/libs/cli.jar --help
 java -jar cli/build/libs/cli.jar
 ```
+
+## Install and use the SDK library
 
 ### Add a dependency to your `build.gradle.kts` file:
 
@@ -50,7 +52,7 @@ val client = ObjectiveClient(objectiveKey)
 ```kotlin
 import kotlinx.serialization.json.JsonObject
 
-// Note that the generic can be any Ktor serializable object
+// Note that the generic can be any @Serializable object
 // https://ktor.io/docs/client-serialization.html#receive_send_data
 // It is strongly suggested you use nullable types to avoid deserialization errors
 val obj = client.getObject<JsonObject>("objectId")

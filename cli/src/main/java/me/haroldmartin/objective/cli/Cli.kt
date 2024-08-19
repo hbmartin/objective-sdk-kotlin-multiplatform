@@ -1,8 +1,10 @@
 package me.haroldmartin.objective.cli
 
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import me.haroldmartin.objective.ObjectiveClient
+import java.io.File
 
 fun getObject(
     objectiveKey: String,
@@ -61,4 +63,27 @@ fun searchIndex(
         println(it.id)
         println(it.objectData)
     }
+}
+
+@Suppress("TooGenericExceptionCaught")
+fun createObject(
+    objectiveKey: String,
+    fileName: String,
+) = runBlocking {
+    val fileContents: String
+    try {
+        fileContents = File(fileName).readText()
+    } catch (e: Exception) {
+        println("Error reading $fileName : ${e.message}")
+        return@runBlocking
+    }
+    val jsonData: JsonObject
+    try {
+        jsonData = Json.decodeFromString<JsonObject>(fileContents)
+    } catch (e: Exception) {
+        println("Error deserializing $fileName : ${e.message}")
+        return@runBlocking
+    }
+    val id = ObjectiveClient(objectiveKey).createObject(jsonData)
+    println("$id <= $fileName")
 }

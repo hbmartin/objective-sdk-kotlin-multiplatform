@@ -83,13 +83,13 @@ class ObjectiveClient(
             ).body<ObjectsResponse<T>>()
             .objects
 
-    suspend fun createObject(jsonObject: Any): ObjectId =
-        httpClient.post("objects", jsonObject).body<Id>().id
+    suspend inline fun <reified T : Any> createObject(serializableObject: T): ObjectId =
+        httpClient.post("objects", serializableObject).body<Id>().id
 
-    suspend fun <T : Any> upsertObject(
+    suspend inline fun <reified T : Any> upsertObject(
         objectId: ObjectId,
-        jsonObject: T,
-    ): ObjectId = httpClient.put("objects/${objectId.encodeUrlOrThrow()}", jsonObject).body<Id>().id
+        serializableObject: T,
+    ): ObjectId = httpClient.put<T>("objects/${objectId.encodeUrlOrThrow()}", serializableObject).body<Id>().id
 
     suspend fun deleteObject(objectId: ObjectId): Boolean =
         httpClient.delete("objects/${objectId.encodeUrlOrThrow()}").let {
