@@ -51,7 +51,7 @@ class ApiClient(
             }
         }
 
-    suspend inline fun <reified T : Any>  post(
+    suspend inline fun <reified T : Any> post(
         path: String,
         requestBody: T,
     ): HttpResponse =
@@ -63,7 +63,7 @@ class ApiClient(
                 }.body()
         }
 
-    suspend inline fun <reified T : Any>  put(
+    suspend inline fun <reified T : Any> put(
         path: String,
         requestBody: T,
     ): HttpResponse =

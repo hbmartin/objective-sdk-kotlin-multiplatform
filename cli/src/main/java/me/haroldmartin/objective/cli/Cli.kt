@@ -65,6 +65,7 @@ fun searchIndex(
     }
 }
 
+@Suppress("TooGenericExceptionCaught")
 fun createObject(
     objectiveKey: String,
     fileName: String,
@@ -84,5 +85,5 @@ fun createObject(
         return@runBlocking
     }
     val id = ObjectiveClient(objectiveKey).createObject(jsonData)
-    println("Created object with ID: $id")
+    println("$id <= $fileName")
 }
