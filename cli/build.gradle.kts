@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
     id("application")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 application {

@@ -11,6 +11,8 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.withContext
@@ -49,23 +51,25 @@ class ApiClient(
             }
         }
 
-    suspend inline fun post(
+    suspend inline fun <reified T : Any>  post(
         path: String,
-        requestBody: Any,
+        requestBody: T,
     ): HttpResponse =
         withContext(ioDispatcher) {
             httpClient
                 .post(path) {
+                    contentType(ContentType.Application.Json)
                     setBody(requestBody)
                 }.body()
         }
 
-    suspend inline fun put(
+    suspend inline fun <reified T : Any>  put(
         path: String,
-        requestBody: Any,
+        requestBody: T,
     ): HttpResponse =
         withContext(ioDispatcher) {
             httpClient.put(path) {
+                contentType(ContentType.Application.Json)
                 setBody(requestBody)
             }
         }

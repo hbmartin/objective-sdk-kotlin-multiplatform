@@ -8,4 +8,4 @@ class ObjectiveApiException(
 
 class UnencodedIdException(
     val id: String,
-) : Exception("ID has non-URL characters and autoUrlEncodeIds=False: $id")
+) : Exception("ID has non-URL characters and autoUrlEncodeIds=false: $id")

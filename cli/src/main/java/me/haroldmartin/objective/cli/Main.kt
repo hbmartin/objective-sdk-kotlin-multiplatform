@@ -13,6 +13,7 @@ private const val HELP_MESSAGE = """
         [o]bjects       List objects or pass an object ID to get a single object
         [i]ndexes       List indexes or pass an index ID to get a single index
         [s]earch        Pass an Index ID and a search term to query an index
+        co              Create an object from JSON file[s]
 """
 
 fun main(args: Array<String>) {
@@ -74,6 +75,18 @@ private fun runUi(args: Array<String>) =
                 exitProcess(1)
             }
             searchIndex(objectiveKey, indexId, query, args.getOrNull(5))
+            exitProcess(0)
+        }
+        args[2].startsWith("c") -> {
+            val objectiveKey = parseArgsForObjectiveKey(args)
+            val fileNames = args.drop(3)
+            if (fileNames.isEmpty()) {
+                println("Usage: objective co [JSON_FILE] [OTHER_JSON_FILE]")
+                exitProcess(1)
+            }
+            for (fileName in fileNames) {
+                createObject(objectiveKey, fileName)
+            }
             exitProcess(0)
         }
         else -> {
