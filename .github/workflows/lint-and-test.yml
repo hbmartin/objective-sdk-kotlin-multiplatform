@@ -25,5 +25,4 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - run: ./gradlew :objective:detektMetadataMain
       - run: ./gradlew :cli:detektMain
-      - run: ./gradlew :objective:assemble
-      - run: ./gradlew :cli:assemble
+      - run: ./gradlew :objective:assemble :cli:assemble

@@ -12,7 +12,7 @@ private val Nord9 = Color(129, 161, 193)
 private val Nord11 = Color(191, 97, 106)
 private val Nord14 = Color(163, 190, 140)
 
-val NordColorsPalette =
+internal val NordColorsPalette =
     ColorsPalette(
         mainBg = Nord0,
         menuBg = Nord0,
