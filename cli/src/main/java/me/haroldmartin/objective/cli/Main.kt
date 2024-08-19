@@ -35,7 +35,8 @@ fun main(args: Array<String>) {
     }
 }
 
-fun runUi(args: Array<String>) =
+@Suppress("CyclomaticComplexMethod")
+private fun runUi(args: Array<String>) =
     when {
         args.size == 2 || (args.size == 4 && args.indexOf("-c") != -1) -> runMosaicBlocking {
             val colorsPalette = parseArgsForColorsPalette(args)

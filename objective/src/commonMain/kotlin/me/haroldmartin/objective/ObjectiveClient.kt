@@ -2,8 +2,6 @@ package me.haroldmartin.objective
 
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
-import io.ktor.client.statement.readText
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.IO
 import me.haroldmartin.objective.models.index.Id
@@ -23,6 +21,7 @@ import kotlin.coroutines.CoroutineContext
 
 private const val API_BASE_URL = "https://api.objective.inc/v1/"
 
+@Suppress("TooManyFunctions")
 class ObjectiveClient(
     apiKey: String,
     val autoUrlEncodeIds: Boolean = true,
@@ -43,6 +42,7 @@ class ObjectiveClient(
     suspend fun deleteIndex(indexId: IndexId): Boolean =
         httpClient.delete("indexes/${indexId.encodeUrlOrThrow()}").status.isSuccess()
 
+    @Suppress("LongParameterList")
     suspend inline fun <reified T : Any?> search(
         indexId: IndexId,
         query: String,
@@ -61,11 +61,7 @@ class ObjectiveClient(
                         "" +
                             if (objectFields != null) "&object_fields=$objectFields" else ""
                     },
-            )
-            .also {
-                println(it.bodyAsText())
-            }
-            .body<SearchResultsResponse<T>>()
+            ).body<SearchResultsResponse<T>>()
 
     // Object calls
 
