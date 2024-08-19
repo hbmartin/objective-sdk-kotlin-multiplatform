@@ -4,17 +4,17 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.IO
-import me.haroldmartin.objective.models.Id
-import me.haroldmartin.objective.models.Index
-import me.haroldmartin.objective.models.IndexConfiguration
-import me.haroldmartin.objective.models.IndexId
-import me.haroldmartin.objective.models.IndexStatusResponse
-import me.haroldmartin.objective.models.IndexStatuses
-import me.haroldmartin.objective.models.Indexes
-import me.haroldmartin.objective.models.ObjectContainer
-import me.haroldmartin.objective.models.ObjectId
-import me.haroldmartin.objective.models.ObjectStatusContainer
-import me.haroldmartin.objective.models.ObjectsResponse
+import me.haroldmartin.objective.models.index.Id
+import me.haroldmartin.objective.models.index.Index
+import me.haroldmartin.objective.models.index.IndexConfiguration
+import me.haroldmartin.objective.models.index.IndexId
+import me.haroldmartin.objective.models.index.IndexStatusResponse
+import me.haroldmartin.objective.models.index.IndexStatuses
+import me.haroldmartin.objective.models.index.Indexes
+import me.haroldmartin.objective.models.obj.ObjectContainer
+import me.haroldmartin.objective.models.obj.ObjectId
+import me.haroldmartin.objective.models.obj.ObjectStatusContainer
+import me.haroldmartin.objective.models.obj.ObjectsResponse
 import kotlin.coroutines.CoroutineContext
 
 private const val API_BASE_URL = "https://api.objective.inc/v1/"
@@ -75,6 +75,7 @@ class ObjectiveClient(
         }
 }
 
+/** @suppress */
 suspend inline fun <reified T> HttpResponse.bodyOrThrow(): T = if (this.status.isSuccess()) {
     this.body<T>()
 } else {

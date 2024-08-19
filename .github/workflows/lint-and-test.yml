@@ -22,9 +22,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          add-job-summary-as-pr-comment: always
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - run: ./gradlew :objective:detektMetadataMain
       - run: ./gradlew :cli:detektMain
-      - run: ./gradlew :objective:assemble
-      - run: ./gradlew :cli:assemble
+      - run: ./gradlew :objective:assemble :cli:assemble

@@ -10,7 +10,7 @@ private val Red = Color(204, 0, 0)
 private val Gray = Color(128, 128, 128)
 private val Cyan = Color(6, 152, 154)
 
-val DefaultColorsPalette =
+internal val DefaultColorsPalette =
     ColorsPalette(
         mainBg = Color.Unspecified,
         menuBg = Color.Unspecified,

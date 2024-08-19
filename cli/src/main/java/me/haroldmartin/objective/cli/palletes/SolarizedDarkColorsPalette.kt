@@ -11,7 +11,7 @@ private val Orange = Color(203, 75, 22)
 private val Black1 = Color(0, 43, 54)
 private val Black2 = Color(7, 54, 66)
 
-val SolarizedDarkColorsPalette =
+internal val SolarizedDarkColorsPalette =
     ColorsPalette(
         mainBg = Black1,
         menuBg = Black1,

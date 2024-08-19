@@ -1,8 +1,9 @@
-package me.haroldmartin.objective.models
+package me.haroldmartin.objective.models.index
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.haroldmartin.objective.models.Pagination
 
 @Serializable
 data class Index(

@@ -1,8 +1,11 @@
-package me.haroldmartin.objective.models
+package me.haroldmartin.objective.models.obj
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.haroldmartin.objective.models.Metadata
+import me.haroldmartin.objective.models.Pagination
+import me.haroldmartin.objective.models.index.IndexStatus
 
 typealias ObjectId = String
 

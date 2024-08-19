@@ -11,7 +11,7 @@ private val Black1 = Color(49, 53, 63)
 private val Black2 = Color(92, 99, 112)
 private val Purple = Color(198, 120, 221)
 
-val OneDarkColorsPalette =
+internal val OneDarkColorsPalette =
     ColorsPalette(
         mainBg = Black1,
         menuBg = Black1,
