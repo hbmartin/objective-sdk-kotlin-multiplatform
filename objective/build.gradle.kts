@@ -6,13 +6,14 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.dokka)
+    id("co.touchlab.kmmbridge") version "0.5.7"
+
 }
 
 kotlin {
     applyDefaultHierarchyTemplate()
     jvm()
 
-    val xcf = XCFramework()
     listOf(
         iosX64(),
         iosArm64(),
@@ -20,13 +21,13 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "objective"
-            xcf.add(this)
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
             implementation("net.thauvin.erik.urlencoder:urlencoder-lib:1.5.0")
@@ -51,7 +52,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.1.1")
+    coordinates("me.haroldmartin", "objective-sdk", "0.1.2")
 
     pom {
         name.set("Objective SDK")
@@ -78,4 +79,8 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://git@github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
         }
     }
+}
+
+kmmbridge {
+    spm()
 }
