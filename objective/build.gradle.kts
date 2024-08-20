@@ -51,11 +51,11 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-cli", "0.1.0")
+    coordinates("me.haroldmartin", "objective-sdk", "0.1.1")
 
     pom {
-        name.set("Objective CLI")
-        description.set("CLI / TUI for Objective Inc. object, indexing, and search.")
+        name.set("Objective SDK")
+        description.set("Client SDK for Objective Inc. object, indexing, and search.")
         inceptionYear.set("2024")
         url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform")
         licenses {

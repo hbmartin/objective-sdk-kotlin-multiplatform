@@ -5,6 +5,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
     alias(libs.plugins.detekt)
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 subprojects {

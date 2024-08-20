@@ -1,8 +1,10 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
     id("application")
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.mavenPublish)
 }
 
 application {
@@ -37,4 +39,37 @@ dependencies {
     implementation("org.jline:jline:3.26.3")
     implementation("org.slf4j:slf4j-nop:2.0.15")
     detektPlugins("io.nlopez.compose.rules:detekt:0.4.10")
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+
+    coordinates("me.haroldmartin", "objective-cli", "0.1.1")
+
+    pom {
+        name.set("Objective CLI")
+        description.set("CLI / TUI for Objective Inc. object, indexing, and search.")
+        inceptionYear.set("2024")
+        url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("hmartin")
+                name.set("Harold Martin")
+                url.set("https://github.com/hbmartin/")
+            }
+        }
+        scm {
+            url.set("https://github.com/hbmartin/objective-sdk-kotlin-multiplatform/")
+            connection.set("scm:git:git://github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
+            developerConnection.set("scm:git:ssh://git@github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
+        }
+    }
 }
