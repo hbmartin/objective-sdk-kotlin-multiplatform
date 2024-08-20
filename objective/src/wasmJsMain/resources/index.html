@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Hello World Wasm</title>
+    <script type="importmap">
+        {
+            "imports": {
+              "@js-joda/core": "https://cdn.jsdelivr.net/npm/@js-joda/core@3.2.0/dist/js-joda.min.js"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as myModule from './objective.mjs';
+
+        // Print all exported symbols
+        Object.keys(myModule.default).forEach(symbol => {
+            console.log(`${symbol}:`, myModule[symbol]);
+        });
+
+    </script>
+</head>
+</html>

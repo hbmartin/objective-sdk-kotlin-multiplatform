@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -13,6 +14,17 @@ kotlin {
     jvm()
 
     val xcf = XCFramework()
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "objective"
+        binaries.executable()
+        browser {
+            commonWebpackConfig {
+                outputFileName = "objective.js"
+            }
+        }
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -43,6 +55,10 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.js)
+            implementation(npm("@js-joda/core", "3.2.0"))
         }
     }
 }

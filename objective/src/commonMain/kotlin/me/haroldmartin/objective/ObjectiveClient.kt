@@ -3,7 +3,6 @@ package me.haroldmartin.objective
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
-import kotlinx.coroutines.IO
 import me.haroldmartin.objective.models.index.Id
 import me.haroldmartin.objective.models.index.Index
 import me.haroldmartin.objective.models.index.IndexConfiguration
@@ -18,14 +17,16 @@ import me.haroldmartin.objective.models.obj.ObjectsResponse
 import me.haroldmartin.objective.models.obj.SearchResultsResponse
 import net.thauvin.erik.urlencoder.UrlEncoderUtil
 import kotlin.coroutines.CoroutineContext
+import kotlin.js.JsExport
 
 private const val API_BASE_URL = "https://api.objective.inc/v1/"
 
 @Suppress("TooManyFunctions")
+@JsExport
 class ObjectiveClient(
     apiKey: String,
     val autoUrlEncodeIds: Boolean = true,
-    ioDispatcher: CoroutineContext = kotlinx.coroutines.Dispatchers.IO,
+    ioDispatcher: CoroutineContext = defaultDispatcher(),
 ) {
     val httpClient = ApiClient(API_BASE_URL, apiKey, ioDispatcher)
 
