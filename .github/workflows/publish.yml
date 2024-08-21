@@ -19,7 +19,6 @@ jobs:
         run: |
           ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
           ./gradlew :cli:assemble :cli:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
-          ./gradlew :objective:releaseRepository
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}

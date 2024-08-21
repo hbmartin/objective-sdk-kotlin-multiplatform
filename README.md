@@ -11,13 +11,9 @@
 Clone this repository and run the CLI / TUI:
 
 ```shell
-git clone https://github.com/hbmartin/objective-sdk-kotlin-multiplatform.git
-cd objective-sdk-kotlin-multiplatform
-./gradlew :cli:assemble
 # Set your API key
 export OBJECTIVE_KEY=sk_...
-java -jar cli/build/libs/cli.jar --help
-java -jar cli/build/libs/cli.jar
+brew install hbmartin/objective/objective
 ```
 
 ## Install and use the SDK library
