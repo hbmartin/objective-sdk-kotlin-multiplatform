@@ -1,4 +1,4 @@
-name: Detekt
+name: Detekt and Test
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   detekt:
-    name: Run Detekt
+    name: Run Detekt and Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -25,4 +25,8 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - run: ./gradlew :objective:detektMetadataMain
       - run: ./gradlew :cli:detektMain
+      - run: ./gradlew :objective:apiCheck
       - run: ./gradlew :objective:assemble :cli:assemble
+      - run: ./gradlew :objective:jvmTest
+        env:
+          OBJECTIVE_KEY: ${{ secrets.OBJECTIVE_KEY }}

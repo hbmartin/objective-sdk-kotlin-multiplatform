@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.SonatypeHost
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,7 +6,7 @@ plugins {
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.dokka)
     id("co.touchlab.kmmbridge") version "0.5.7"
-
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
 }
 
 kotlin {
@@ -48,11 +47,16 @@ kotlin {
     }
 }
 
+apiValidation {
+    ignoredPackages.addAll(listOf("kotlinx.coroutines.internal", "kotlinx.serialization.internal.GeneratedSerializer"))
+    ignoredClasses.addAll(listOf("me.haroldmartin.objective.ApiClient", "me.haroldmartin.objective.HttpEngineKt"))
+}
+
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.1.2")
+    coordinates("me.haroldmartin", "objective-sdk", "0.1.3")
 
     pom {
         name.set("Objective SDK")
@@ -82,5 +86,6 @@ mavenPublishing {
 }
 
 kmmbridge {
-    spm()
+    mavenPublishArtifacts()
+    spm(spmDirectory = rootDir.path)
 }
