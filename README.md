@@ -23,7 +23,7 @@ brew install hbmartin/objective/objective
 (To add the dependency to non-Gradle projects see the snippets on [Maven Central](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk).)
 
 ```kotlin
-implementation("me.haroldmartin:objective-sdk:0.1.3")
+implementation("me.haroldmartin:objective-sdk:0.1.4")
 ```
 
 If Gradle cannot find the Objective artifact then check that `mavenCentral()` is in your `repositories`.
@@ -54,11 +54,11 @@ import kotlinx.serialization.json.JsonObject
 val obj = client.getObject<JsonObject>("objectId")
 ```
 
-### Java / Spring Usage
+## Java / Spring Usage
 
-The API client calls are `suspend`ing and so require the use of continuations in Java.
+ObjectiveClient methods are `suspend`ing (async) and so require the explicit use of [continuations](https://www.baeldung.com/kotlin/suspend-functions-from-java) in Java.
 
-For an example see this [Spring Boot demo](https://github.com/hbmartin/springboot-demo/blob/main/src/main/java/com/example/demo/DemoApplication.java)
+For an example see this [Spring Boot demo](https://github.com/hbmartin/springboot-demo/blob/main/src/main/java/com/example/demo/DemoApplication.java#L28).
 
 ## API Documentation
 
