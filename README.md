@@ -54,6 +54,12 @@ import kotlinx.serialization.json.JsonObject
 val obj = client.getObject<JsonObject>("objectId")
 ```
 
+### Java / Spring Usage
+
+The API client calls are `suspend`ing and so require the use of continuations in Java.
+
+For an example see this [Spring Boot demo](https://github.com/hbmartin/springboot-demo/blob/main/src/main/java/com/example/demo/DemoApplication.java)
+
 ## API Documentation
 
 All of the client calls available are [documented here](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/objective/me.haroldmartin.objective/-objective-client/index.html) 

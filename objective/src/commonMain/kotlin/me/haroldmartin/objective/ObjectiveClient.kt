@@ -18,11 +18,12 @@ import me.haroldmartin.objective.models.obj.ObjectsResponse
 import me.haroldmartin.objective.models.obj.SearchResultsResponse
 import net.thauvin.erik.urlencoder.UrlEncoderUtil
 import kotlin.coroutines.CoroutineContext
+import kotlin.jvm.JvmOverloads
 
 private const val API_BASE_URL = "https://api.objective.inc/v1/"
 
 @Suppress("TooManyFunctions")
-class ObjectiveClient(
+class ObjectiveClient @JvmOverloads constructor(
     apiKey: String,
     val autoUrlEncodeIds: Boolean = true,
     ioDispatcher: CoroutineContext = kotlinx.coroutines.Dispatchers.IO,
