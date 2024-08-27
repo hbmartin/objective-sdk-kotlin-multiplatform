@@ -22,10 +22,6 @@ jobs:
           cd objective-sdk-kotlin-multiplatform
           ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral :objective:updatePackageSwift --no-configuration-cache --no-parallel
           ./gradlew :cli:assemble :cli:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
-          pwd
-          ls -l
-          ls -l cli/build
-          ls -l cli/build/*
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
@@ -39,9 +35,7 @@ jobs:
           path: homebrew-objective
       - name: Commit and push to homebrew repo
         run: |
-          ls -l
           cd homebrew-objective
-          ls -l
           cp ../objective-sdk-kotlin-multiplatform/cli/build/Formula/objective.rb Formula/objective.rb
           git config user.name hbmartin[bot]
           git config user.email harold.martin@gmail.com
@@ -56,14 +50,12 @@ jobs:
           path: objective-sdk-ios
       - name: Commit and push to SPM repo
         run: |
-          ls -l
           cd objective-sdk-ios
-          ls -l
           cp ../objective-sdk-kotlin-multiplatform/Package.swift Package.swift
           git config user.name hbmartin[bot]
           git config user.email harold.martin@gmail.com
           git add Package.swift
           git commit -m "Update objective-sdk-ios to ${{ github.event.release.tag_name }}"
           git push origin head
-          git tag -a ${{ github.event.release.tag_name }}
+          git tag -a ${{ github.event.release.tag_name }} -m "Update objective-sdk-ios to ${{ github.event.release.tag_name }}"
           git push origin ${{ github.event.release.tag_name }}
