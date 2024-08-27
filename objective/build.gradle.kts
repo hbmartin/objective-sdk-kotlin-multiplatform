@@ -56,7 +56,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.1.4")
+    coordinates("me.haroldmartin", "objective-sdk", "0.1.5")
 
     pom {
         name.set("Objective SDK")

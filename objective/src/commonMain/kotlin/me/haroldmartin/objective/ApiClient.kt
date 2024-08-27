@@ -46,7 +46,7 @@ class ApiClient(
                 }
                 headers {
                     append("Authorization", "Bearer $apiKey")
-                    append("User-Agent", "objective-kotlin/0.1.4")
+                    append("User-Agent", "objective-kotlin/0.1.5")
                 }
             }
         }
