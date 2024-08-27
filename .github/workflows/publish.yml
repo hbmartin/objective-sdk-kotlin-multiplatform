@@ -17,10 +17,32 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Publish Library
         run: |
-          ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
+          ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral :objective:updatePackageSwift --no-configuration-cache --no-parallel
           ./gradlew :cli:assemble :cli:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
+          pwd
+          ls -l
+          ls -l objective
+          ls -l objective/build
+          ls -l objective/build/*
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      - name: Checkout homebrew repo
+        uses: actions/checkout@v4
+        with:
+          repository: hbmartin/homebrew-objective
+          token: ${{ secrets.PAT_HOMEBREW_OBJECTIVE }}
+          path: homebrew-objective
+      - name: Commit and push to homebrew repo
+        run: |
+          ls -l
+          cd homebrew-objective
+          ls -l
+          cp ../objective/build/Formula/objective.rb Formula/
+          git config user.name hbmartin[bot]
+          git config user.email harold.martin@gmail.com
+          git add Formula
+          git commit -m "Update homebrew-objective to latest version"
+          git push

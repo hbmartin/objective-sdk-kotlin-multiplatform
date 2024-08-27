@@ -8,7 +8,7 @@
 
 ## Install and run the CLI / TUI
 
-Clone this repository and run the CLI / TUI:
+Clone this repository to run the CLI / TUI or install with Homebrew.
 
 ```shell
 # Set your API key

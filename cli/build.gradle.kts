@@ -5,6 +5,7 @@ plugins {
     id("application")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.mavenPublish)
+    id("me.haroldmartin.homebrew.plugin") version "0.0.1"
 }
 
 application {
@@ -72,4 +73,12 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://git@github.com/hbmartin/objective-sdk-kotlin-multiplatform.git")
         }
     }
+}
+
+homebrew {
+    homepage = "https://github.com/hbmartin/objective-sdk-kotlin-multiplatform"
+    cliName = "objective"
+    desc = "Objective object and index access via CLI / TUI"
+    tests = mapOf("-h" to "Usage: objective [-k OBJECTIVE_KEY] [COMMAND]")
+    license = "Apache-2.0"
 }
