@@ -6,6 +6,18 @@
 [![Documentation](https://img.shields.io/badge/Documentation-3d3d41?logo=kotlin)](https://hbmartin.github.io/objective-sdk-kotlin-multiplatform/index.html)
 [![Maven Central Version](https://img.shields.io/maven-central/v/me.haroldmartin/objective-sdk)](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk)
 
+* [Install and run the CLI / TUI](#install-and-run-the-cli-tui)
+* [Install and use the SDK library](#install-and-use-the-sdk-library)
+    + [Add a dependency to your `build.gradle.kts` file:](#add-a-dependency-to-your-buildgradlekts-file)
+    + [Instantiate the SDK](#instantiate-the-sdk)
+    + [Get an object](#get-an-object)
+* [Java / Spring Usage](#java-spring-usage)
+* [iOS Usage](#ios-usage)
+* [API Documentation](#api-documentation)
+* [Contributing](#contributing)
+* [Authors](#authors)
+* [Legal](#legal)
+
 ## Install and run the CLI / TUI
 
 Clone this repository to run the CLI / TUI or install with Homebrew.
@@ -23,7 +35,7 @@ brew install hbmartin/objective/objective
 (To add the dependency to non-Gradle projects see the snippets on [Maven Central](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk).)
 
 ```kotlin
-implementation("me.haroldmartin:objective-sdk:0.1.7")
+implementation("me.haroldmartin:objective-sdk:0.3.0")
 ```
 
 If Gradle cannot find the Objective artifact then check that `mavenCentral()` is in your `repositories`.
@@ -59,6 +71,22 @@ val obj = client.getObject<JsonObject>("objectId")
 ObjectiveClient methods are `suspend`ing (async) and so require the explicit use of [continuations](https://www.baeldung.com/kotlin/suspend-functions-from-java) in Java.
 
 For an example see this [Spring Boot demo](https://github.com/hbmartin/springboot-demo/blob/main/src/main/java/com/example/demo/DemoApplication.java#L28).
+
+## iOS Usage
+
+This library is compatible with Kotlin Multiplatform and can be used in iOS projects. The client methods can either be called as `async` methods or using completion handlers. To call it from Swift, use the following:
+
+```swift
+let client = ObjectiveClientInit.shared.withKey(apiKey: "sk_DVkOBubJN3lr")
+client.getIndexes { indexes, error in
+    if error != nil {
+        print("failed to getObjects: \(error)")
+    }
+    if let indexes {
+        ...
+    }
+}
+```
 
 ## API Documentation
 

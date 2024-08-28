@@ -56,7 +56,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.1.7")
+    coordinates("me.haroldmartin", "objective-sdk", "0.3.0")
 
     pom {
         name.set("Objective SDK")
@@ -86,7 +86,7 @@ mavenPublishing {
 }
 
 kmmbridge {
-    version = "0.1.7"
+    version = "0.3.0"
     mavenPublishArtifacts()
     spm(spmDirectory = rootDir.path)
 }

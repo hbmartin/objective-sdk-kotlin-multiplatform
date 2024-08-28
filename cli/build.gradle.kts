@@ -5,7 +5,7 @@ plugins {
     id("application")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.mavenPublish)
-    id("me.haroldmartin.homebrew.plugin") version "0.1.0"
+    id("me.haroldmartin.homebrew.plugin") version "0.2.0"
 }
 
 application {
@@ -46,7 +46,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-cli", "0.1.7")
+    coordinates("me.haroldmartin", "objective-cli", "0.3.0")
 
     pom {
         name.set("Objective CLI")
