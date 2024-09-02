@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.dokka)
-    id("co.touchlab.kmmbridge") version "0.5.7"
+    id("co.touchlab.kmmbridge") version "1.0.0"
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
 }
 
