@@ -38,6 +38,7 @@ data class TableConfig<T>(
             val selectedValueColor: Color = valueColor,
             val valueAlignment: ColumnAlignment = ColumnAlignment.START,
             override val weight: Int = 1,
+            @Suppress("BooleanPropertyNaming")
             val trimFromEnd: Boolean = false,
         ) : ColumnConfig<T>
 
@@ -56,7 +57,7 @@ data class TableConfig<T>(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CognitiveComplexMethod", "BracesOnWhenStatements")
 @Composable
 fun <T> Table(
     tableData: TableData<T>,

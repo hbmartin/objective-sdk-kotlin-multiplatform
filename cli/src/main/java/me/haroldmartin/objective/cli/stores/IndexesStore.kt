@@ -24,6 +24,14 @@ class IndexesStore(
                 }
             }
 
+    private val selectedId: String?
+        get() =
+            stateFlow.value.selectedRow?.let { selectedRow ->
+                stateFlow.value.items
+                    ?.get(selectedRow)
+                    ?.id
+            }
+
     fun load() =
         coroutineScope.launch {
             val indexes = client.getIndexes()
@@ -65,26 +73,18 @@ class IndexesStore(
     private fun updateStatuses(
         indexId: String,
         status: IndexStatuses?,
-    ) = stateFlow.value.items?.map {
-        if (it.id == indexId) {
-            it.copy(
+    ) = stateFlow.value.items?.map { index ->
+        if (index.id == indexId) {
+            index.copy(
                 uploaded = status?.uploaded,
                 processing = status?.processing,
                 ready = status?.ready,
                 error = status?.error,
             )
         } else {
-            it
+            index
         }
     }
-
-    private val selectedId: String?
-        get() =
-            stateFlow.value.selectedRow?.let { selectedRow ->
-                stateFlow.value.items
-                    ?.get(selectedRow)
-                    ?.id
-            }
 
     fun selectUp() {
         val selectedRow = stateFlow.value.selectedRow
@@ -116,8 +116,8 @@ class IndexesStore(
 
         updateItemUpdatedAt(indexId, "[deleting...]")
         coroutineScope.launch {
-            val didRemove = client.deleteIndex(indexId)
-            if (didRemove) {
+            val wasRemoved = client.deleteIndex(indexId)
+            if (wasRemoved) {
                 removeItem(indexId)
             } else {
                 updateItemUpdatedAt(indexId, "[error]")
@@ -126,30 +126,30 @@ class IndexesStore(
     }
 
     private fun updateItemUpdatedAt(
-        objectId: String,
+        indexId: String,
         message: String,
     ) {
         val updatedItems =
-            stateFlow.value.items?.map {
-                if (it.id == objectId) {
-                    it.copy(
+            stateFlow.value.items?.map { index ->
+                if (index.id == indexId) {
+                    index.copy(
                         updatedAt = message,
                     )
                 } else {
-                    it
+                    index
                 }
             }
         stateFlow.value =
             stateFlow.value.copy(items = updatedItems)
     }
 
-    private fun removeItem(objectId: String) {
+    private fun removeItem(indexId: String) {
         val updatedItems =
-            stateFlow.value.items?.mapNotNull {
-                if (it.id == objectId) {
+            stateFlow.value.items?.mapNotNull { index ->
+                if (index.id == indexId) {
                     null
                 } else {
-                    it
+                    index
                 }
             }
         stateFlow.value =

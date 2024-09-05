@@ -39,7 +39,12 @@ fun runCliCommand(args: Array<String>) {
                 println("Usage: objective search [INDEX_ID] [SEARCH_TERM] [FIELDS]")
                 exitProcess(1)
             }
-            searchIndex(objectiveKey, indexId, query, args.getOrNull(ARG_INDEX + 2))
+            searchIndex(
+                objectiveKey = objectiveKey,
+                indexId = indexId,
+                query = query,
+                objectFields = args.getOrNull(ARG_INDEX + 2),
+            )
             exitProcess(0)
         }
 
@@ -55,9 +60,7 @@ fun runCliCommand(args: Array<String>) {
             exitProcess(0)
         }
 
-        else -> {
-            println("Unknown command: ${args[0]}\n$HELP_MESSAGE")
-        }
+        else -> println("Unknown command: ${args[0]}\n$HELP_MESSAGE")
     }
 }
 
@@ -76,9 +79,9 @@ fun listObjects(objectiveKey: String) =
     runBlocking {
         ObjectiveClient(objectiveKey)
             .getObjects<JsonObject>(includeObject = true, limit = 20)
-            .forEach {
-                println("${it.id} (${it.updatedAt}):")
-                println(it.objectData)
+            .forEach { obj ->
+                println("${obj.id} (${obj.updatedAt}):")
+                println(obj.objectData)
             }
     }
 
@@ -96,13 +99,13 @@ fun getIndex(
 fun listIndexes(objectiveKey: String) =
     runBlocking {
         val client = ObjectiveClient(objectiveKey)
-        client.getIndexes().forEach {
+        client.getIndexes().forEach { index ->
             @Suppress("TooGenericExceptionCaught")
             try {
-                val status = client.getIndexStatus(it.id)
-                println("${it.id} (${it.updatedAt}) => $status")
+                val status = client.getIndexStatus(index.id)
+                println("${index.id} (${index.updatedAt}) => $status")
             } catch (e: Exception) {
-                println("${it.id} (${it.updatedAt}) => ${e.message}")
+                println("${index.id} (${index.updatedAt}) => ${e.message}")
             }
         }
     }
@@ -114,13 +117,13 @@ fun searchIndex(
     objectFields: String? = null,
 ) = runBlocking {
     val client = ObjectiveClient(objectiveKey)
-    client.search<JsonObject>(indexId, query, objectFields = objectFields).results.forEach {
-        println(it.id)
-        println(it.objectData)
+    client.search<JsonObject>(indexId, query, objectFields = objectFields).results.forEach { obj ->
+        println(obj.id)
+        println(obj.objectData)
     }
 }
 
-@Suppress("TooGenericExceptionCaught")
+@Suppress("TooGenericExceptionCaught", "LabeledExpression")
 fun createObject(
     objectiveKey: String,
     fileName: String,

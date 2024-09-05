@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.dokka)
-    id("co.touchlab.kmmbridge") version "0.5.7"
+    id("co.touchlab.kmmbridge") version "1.0.1"
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
 }
 
@@ -87,6 +87,6 @@ mavenPublishing {
 
 kmmbridge {
     version = "0.3.0"
-    mavenPublishArtifacts()
+    mavenPublishArtifacts(isMavenCentral = true)
     spm(spmDirectory = rootDir.path)
 }

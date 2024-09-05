@@ -78,8 +78,8 @@ class ObjectsStore(
 
         updateItemUpdatedAt(objectId, "[deleting...]")
         coroutineScope.launch {
-            val didRemove = client.deleteObject(objectId)
-            if (didRemove) {
+            val wasRemoved = client.deleteObject(objectId)
+            if (wasRemoved) {
                 removeItem(objectId)
             } else {
                 updateItemUpdatedAt(objectId, "[error]")
@@ -92,13 +92,13 @@ class ObjectsStore(
         message: String,
     ) {
         val updatedItems =
-            stateFlow.value.items?.map {
-                if (it.id == objectId) {
-                    it.copy(
+            stateFlow.value.items?.map { obj ->
+                if (obj.id == objectId) {
+                    obj.copy(
                         updatedAt = message,
                     )
                 } else {
-                    it
+                    obj
                 }
             }
         stateFlow.value =
@@ -107,11 +107,11 @@ class ObjectsStore(
 
     private fun removeItem(objectId: String) {
         val updatedItems =
-            stateFlow.value.items?.mapNotNull {
-                if (it.id == objectId) {
+            stateFlow.value.items?.mapNotNull { obj ->
+                if (obj.id == objectId) {
                     null
                 } else {
-                    it
+                    obj
                 }
             }
         stateFlow.value =

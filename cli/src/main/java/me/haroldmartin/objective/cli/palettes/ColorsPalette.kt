@@ -1,4 +1,4 @@
-package me.haroldmartin.objective.cli.palletes
+package me.haroldmartin.objective.cli.palettes
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ProvidableCompositionLocal

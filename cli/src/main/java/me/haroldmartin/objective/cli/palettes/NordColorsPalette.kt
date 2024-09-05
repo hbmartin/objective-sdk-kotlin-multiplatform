@@ -1,4 +1,4 @@
-package me.haroldmartin.objective.cli.palletes
+package me.haroldmartin.objective.cli.palettes
 
 import com.jakewharton.mosaic.ui.Color
 

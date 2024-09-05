@@ -21,7 +21,7 @@ data class UiState(
         // these MUST come last in the list
 
         companion object {
-            val navEntries = entries.filter { it.displayName != null }
+            val NAV_ENTRIES = entries.filter { it.displayName != null }
 
             fun fromUiState(uiState: ScreenUiState): Screen =
                 when (uiState) {

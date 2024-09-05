@@ -1,23 +1,23 @@
-package me.haroldmartin.objective.cli.palletes
+package me.haroldmartin.objective.cli.palettes
 
 import com.jakewharton.mosaic.ui.Color
 
-private val White = Color(171, 178, 191)
-private val Cyan = Color(86, 182, 194)
-private val Red = Color(24, 108, 117)
-private val Green = Color(152, 195, 121)
-private val Blue = Color(97, 175, 239)
-private val Black1 = Color(49, 53, 63)
-private val Black2 = Color(92, 99, 112)
-private val Purple = Color(198, 120, 221)
+private val White = Color(248, 248, 242)
+private val Cyan = Color(139, 233, 253)
+private val Red = Color(255, 85, 85)
+private val Green = Color(80, 250, 123)
+private val Blue = Color(98, 114, 164)
+private val Orange = Color(255, 184, 108)
+private val Black1 = Color(40, 42, 54)
+private val Black2 = Color(68, 71, 90)
 
-internal val OneDarkColorsPalette =
+internal val DraculaColorsPalette =
     ColorsPalette(
         mainBg = Black1,
         menuBg = Black1,
         menuFg = White,
         menuDividerFg = Black2,
-        menuHighlightFg = Purple,
+        menuHighlightFg = Orange,
         statusBarFg = Blue,
         memoryTitleFg = White,
         memoryBorderFg = Black2,
@@ -32,7 +32,7 @@ internal val OneDarkColorsPalette =
         cpuTitleFg = White,
         cpuBorderFg = Black2,
         cpuChartLineFg = Black2,
-        cpuChartAxisFg = Black2,
+        cpuChartAxisFg = White,
         cpuSysCpuText1Fg = White,
         cpuSysCpuText2Fg = Red,
         cpuSysCpuDatasetFg = Red,
@@ -47,9 +47,9 @@ internal val OneDarkColorsPalette =
         throughputSparklineBaselineFg = Black2,
         networkTitleFg = White,
         networkBorderFg = Black2,
-        dangerBg = Red,
-        networkRxSTextFg = Red,
-        networkRxSparklineFg = Red,
+        dangerBg = Orange,
+        networkRxSTextFg = Orange,
+        networkRxSparklineFg = Orange,
         networkRxSparklineBaselineFg = Black2,
         networkTxTotalTextFg = Blue,
         networkTxSTextFg = Blue,
@@ -62,7 +62,7 @@ internal val OneDarkColorsPalette =
         statTableRowGaugeBg = Black2,
         statTableRowTop1Fg = White,
         statTableRowTop2Fg = Blue,
-        statTableRowHighlightBg = Purple,
+        statTableRowHighlightBg = Orange,
         callsTitleFg = White,
         callsBorderFg = Black2,
         callsTableHeaderFg = Cyan,
@@ -70,17 +70,17 @@ internal val OneDarkColorsPalette =
         callsTableRowGaugeBg = Black2,
         callsTableRowTop1Fg = White,
         callsTableRowTop2Fg = Blue,
-        callsTableRowHighlightBg = Purple,
+        callsTableRowHighlightBg = Orange,
         rawTitleFg = White,
         rawBorderFg = Black2,
         rawTableHeaderFg = Cyan,
         rawTableRowTop1Fg = White,
         rawTableRowTop2Fg = Blue,
-        rawTableRowHighlightBg = Purple,
+        rawTableRowHighlightBg = Orange,
         slowTitleFg = White,
         slowBorderFg = Black2,
         slowTableHeaderFg = Cyan,
         slowTableRowTop1Fg = White,
         slowTableRowTop2Fg = Blue,
-        slowTableRowHighlightBg = Purple,
+        slowTableRowHighlightBg = Orange,
     )

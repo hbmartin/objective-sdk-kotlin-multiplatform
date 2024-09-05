@@ -23,17 +23,18 @@ fun Modifier.border(
     this
         .then(
             BorderModifier(
-                topStart.toString(),
-                topEnd.toString(),
-                bottomStart.toString(),
-                bottomEnd.toString(),
-                verticalStart.toString(),
-                verticalEnd.toString(),
-                horizontalTop.toString(),
-                horizontalBottom.toString(),
-                color,
+                topStart = topStart.toString(),
+                topEnd = topEnd.toString(),
+                bottomStart = bottomStart.toString(),
+                bottomEnd = bottomEnd.toString(),
+                verticalStart = verticalStart.toString(),
+                verticalEnd = verticalEnd.toString(),
+                horizontalTop = horizontalTop.toString(),
+                horizontalBottom = horizontalBottom.toString(),
+                color = color,
             ),
-        ).padding(all = 1)
+        )
+        .padding(all = 1)
 
 @Suppress("LongParameterList")
 private class BorderModifier(

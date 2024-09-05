@@ -41,17 +41,17 @@ class ViewModel(
             .flowOn(Dispatchers.Default)
             .stateIn(coroutineScope, SharingStarted.Lazily, UiState())
 
+    init {
+        indexesStore.load()
+        objectsStore.load()
+    }
+
     private fun currentScreenToStateFlow(currentScreen: UiState.Screen): StateFlow<ScreenUiState> =
         when (currentScreen) {
             UiState.Screen.Indexes -> indexesStore.state
             UiState.Screen.Objects -> objectsStore.state
             UiState.Screen.Dialog -> dialogScreenFlow
         }
-
-    init {
-        indexesStore.load()
-        objectsStore.load()
-    }
 
     fun onArrowLeftPress() {
         switchScreenToLeft()
@@ -104,22 +104,18 @@ class ViewModel(
 
     fun onDPress() {
         when (currentScreenFlow.value) {
-            UiState.Screen.Indexes -> {
-                indexesStore.selectedIdAndStatuses?.also { (id, statuses) ->
-                    dialogScreenPreviousState = UiState.Screen.Indexes
-                    dialogScreenFlow.value = DialogScreenUiState("Proceed to delete index `$id` ?", statuses)
-                    currentScreenFlow.value = UiState.Screen.Dialog
-                }
+            UiState.Screen.Indexes -> indexesStore.selectedIdAndStatuses?.also { (id, statuses) ->
+                dialogScreenPreviousState = UiState.Screen.Indexes
+                dialogScreenFlow.value = DialogScreenUiState("Proceed to delete index `$id` ?", statuses)
+                currentScreenFlow.value = UiState.Screen.Dialog
             }
-            UiState.Screen.Objects -> {
-                objectsStore.selectedIdAndContent?.also { (id, content) ->
-                    dialogScreenPreviousState = UiState.Screen.Objects
-                    dialogScreenFlow.value = DialogScreenUiState(
-                        title = "Proceed to delete object `$id` ?",
-                        messages = content.toStringList(),
-                    )
-                    currentScreenFlow.value = UiState.Screen.Dialog
-                }
+            UiState.Screen.Objects -> objectsStore.selectedIdAndContent?.also { (id, content) ->
+                dialogScreenPreviousState = UiState.Screen.Objects
+                dialogScreenFlow.value = DialogScreenUiState(
+                    title = "Proceed to delete object `$id` ?",
+                    messages = content.toStringList(),
+                )
+                currentScreenFlow.value = UiState.Screen.Dialog
             }
             UiState.Screen.Dialog -> Unit
         }
@@ -162,8 +158,8 @@ class ViewModel(
     private fun switchScreenToRight() {
         val currentScreen = currentScreenFlow.value
         currentScreenFlow.value =
-            UiState.Screen.navEntries[
-                if (currentScreen.ordinal < UiState.Screen.navEntries.lastIndex) {
+            UiState.Screen.NAV_ENTRIES[
+                if (currentScreen.ordinal < UiState.Screen.NAV_ENTRIES.lastIndex) {
                     currentScreen.ordinal + 1
                 } else {
                     0
@@ -176,10 +172,10 @@ private fun JsonObject?.toStringList(): ImmutableList<String> =
     this
         ?.entries
         ?.mapIndexed { index, (k, v) ->
-            val quoteValue = (v as? JsonPrimitive)?.isString == true
-            val value: String = if (quoteValue) "\"$v\"" else v.toString()
+            val isString = (v as? JsonPrimitive)?.isString == true
+            val value: String = if (isString) "\"$v\"" else v.toString()
             " \"$k\": $value" + if (index < this.size - 1) "," else ""
-        }?.let {
-            listOf("{") + it + listOf("}")
-        }.orEmpty()
+        }
+        ?.let { listOf("{") + it + listOf("}") }
+        .orEmpty()
         .toImmutableList()

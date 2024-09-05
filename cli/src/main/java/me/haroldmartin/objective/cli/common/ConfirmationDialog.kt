@@ -31,15 +31,15 @@ fun ConfirmationDialog(
                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(2),
                 color = titleColor,
             )
-            messages.map {
+            messages.map { msg ->
                 Text(
-                    if (it.length > MSG_LINE_LIMIT) {
-                        it.substring(
+                    if (msg.length > MSG_LINE_LIMIT) {
+                        msg.substring(
                             0,
                             MSG_LINE_LIMIT - 1,
                         ) + "…"
                     } else {
-                        it
+                        msg
                     },
                     color = titleColor,
                 )

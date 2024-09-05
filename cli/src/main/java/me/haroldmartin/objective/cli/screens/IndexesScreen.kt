@@ -9,7 +9,7 @@ import me.haroldmartin.objective.cli.common.BorderedTitledBox
 import me.haroldmartin.objective.cli.common.Table
 import me.haroldmartin.objective.cli.common.TableConfig
 import me.haroldmartin.objective.cli.common.TableData
-import me.haroldmartin.objective.cli.palletes.LocalColorsPalette
+import me.haroldmartin.objective.cli.palettes.LocalColorsPalette
 
 @Composable
 fun IndexesScreen(

@@ -60,7 +60,8 @@ class ApiClient(
                 .post(path) {
                     contentType(ContentType.Application.Json)
                     setBody(requestBody)
-                }.body()
+                }
+                .body()
         }
 
     suspend inline fun <reified T : Any> put(
