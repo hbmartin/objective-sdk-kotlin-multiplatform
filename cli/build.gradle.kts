@@ -46,7 +46,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-cli", "0.3.0")
+    coordinates("me.haroldmartin", "objective-cli", "0.3.1")
 
     pom {
         name.set("Objective CLI")
