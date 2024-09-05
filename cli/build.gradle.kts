@@ -36,7 +36,7 @@ tasks.withType<Jar> {
 dependencies {
     implementation(projects.objective)
     implementation("com.jakewharton.mosaic:mosaic-runtime:0.13.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8")
     implementation("org.jline:jline:3.26.3")
     implementation("org.slf4j:slf4j-nop:2.0.15")
     detektPlugins("io.nlopez.compose.rules:detekt:0.4.11")
@@ -46,7 +46,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-cli", "0.3.0")
+    coordinates("me.haroldmartin", "objective-cli", "0.3.1")
 
     pom {
         name.set("Objective CLI")

@@ -4,6 +4,7 @@ package me.haroldmartin.objective.cli.common
 value class Key(
     val keyCode: Int,
 ) {
+    @Suppress("PropertyName")
     companion object {
         /** Unknown key. */
         val Unknown: Key = Key(0)

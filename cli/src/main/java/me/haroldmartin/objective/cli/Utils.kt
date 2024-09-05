@@ -14,14 +14,11 @@ internal const val HELP_MESSAGE = """
 internal fun parseArgsForObjectiveKey(args: Array<String>): String {
     val keyIndex = args.indexOf("-k")
     if (keyIndex < 0 || keyIndex >= args.lastIndex) {
-        throw NoObjectiveApiKeyError
+        throw NoObjectiveApiKeyError()
     }
     return args[keyIndex + 1]
 }
 
-object NoObjectiveApiKeyError : Error(
+class NoObjectiveApiKeyError : Error(
     "No Objective API key found in OBJECTIVE_KEY env var or -k flag",
-) {
-    @Suppress("UnusedPrivateMember")
-    private fun readResolve(): Any = NoObjectiveApiKeyError
-}
+)

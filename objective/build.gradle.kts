@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.mavenPublish)
     alias(libs.plugins.dokka)
-    id("co.touchlab.kmmbridge") version "0.5.7"
+    id("co.touchlab.kmmbridge") version "1.0.1"
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
 }
 
@@ -56,7 +56,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("me.haroldmartin", "objective-sdk", "0.3.0")
+    coordinates("me.haroldmartin", "objective-sdk", "0.3.1")
 
     pom {
         name.set("Objective SDK")
@@ -86,7 +86,7 @@ mavenPublishing {
 }
 
 kmmbridge {
-    version = "0.3.0"
-    mavenPublishArtifacts()
+    version = "0.3.1"
+    mavenPublishArtifacts(isMavenCentral = true)
     spm(spmDirectory = rootDir.path)
 }

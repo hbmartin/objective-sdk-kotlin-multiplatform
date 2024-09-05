@@ -6,12 +6,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import org.jline.terminal.TerminalBuilder
 
+@Suppress("PropertyName")
 private val terminalReader by lazy {
     val terminal = TerminalBuilder.terminal()
     terminal.enterRawMode()
     terminal.reader()
 }
 
+@Suppress("BracesOnWhenStatements", "PropertyName")
 val keyEventFlow: Flow<KeyEvent> =
     flow {
         while (currentCoroutineContext().isActive) {

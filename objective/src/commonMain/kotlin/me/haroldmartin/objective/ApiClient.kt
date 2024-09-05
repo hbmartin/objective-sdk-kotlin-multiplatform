@@ -46,7 +46,7 @@ class ApiClient(
                 }
                 headers {
                     append("Authorization", "Bearer $apiKey")
-                    append("User-Agent", "objective-kotlin/0.3.0")
+                    append("User-Agent", "objective-kotlin/0.3.1")
                 }
             }
         }
@@ -60,7 +60,8 @@ class ApiClient(
                 .post(path) {
                     contentType(ContentType.Application.Json)
                     setBody(requestBody)
-                }.body()
+                }
+                .body()
         }
 
     suspend inline fun <reified T : Any> put(

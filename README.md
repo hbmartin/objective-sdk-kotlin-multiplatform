@@ -35,7 +35,7 @@ brew install hbmartin/objective/objective
 (To add the dependency to non-Gradle projects see the snippets on [Maven Central](https://central.sonatype.com/artifact/me.haroldmartin/objective-sdk).)
 
 ```kotlin
-implementation("me.haroldmartin:objective-sdk:0.3.0")
+implementation("me.haroldmartin:objective-sdk:0.3.1")
 ```
 
 If Gradle cannot find the Objective artifact then check that `mavenCentral()` is in your `repositories`.

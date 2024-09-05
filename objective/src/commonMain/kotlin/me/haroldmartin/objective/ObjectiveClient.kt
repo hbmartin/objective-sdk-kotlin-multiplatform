@@ -22,7 +22,7 @@ import kotlin.jvm.JvmOverloads
 
 private const val API_BASE_URL = "https://api.objective.inc/v1/"
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "StringLiteralDuplication", "CascadingCallWrapping")
 class ObjectiveClient @JvmOverloads constructor(
     apiKey: String,
     val autoUrlEncodeIds: Boolean = true,

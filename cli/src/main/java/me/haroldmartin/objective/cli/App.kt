@@ -26,8 +26,8 @@ import me.haroldmartin.objective.cli.common.KeyEvent
 import me.haroldmartin.objective.cli.common.key
 import me.haroldmartin.objective.cli.common.keyEventFlow
 import me.haroldmartin.objective.cli.common.utf16CodePoint
-import me.haroldmartin.objective.cli.palletes.ColorsPalette
-import me.haroldmartin.objective.cli.palletes.LocalColorsPalette
+import me.haroldmartin.objective.cli.palettes.ColorsPalette
+import me.haroldmartin.objective.cli.palettes.LocalColorsPalette
 import me.haroldmartin.objective.cli.screens.IndexesScreen
 import me.haroldmartin.objective.cli.screens.ObjectsScreen
 
@@ -88,7 +88,7 @@ fun App(
     }
 }
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "CognitiveComplexMethod", "BracesOnWhenStatements")
 private fun sendKeyToViewModel(
     keyEvent: KeyEvent,
     viewModel: ViewModel,
@@ -128,7 +128,7 @@ private fun BottomStatusBar(
     Box(modifier = modifier.background(LocalColorsPalette.current.menuBg)) {
         Text(
             buildAnnotatedString {
-                UiState.Screen.navEntries.forEachIndexed { index, screen ->
+                UiState.Screen.NAV_ENTRIES.forEachIndexed { index, screen ->
                     if (screen == currentScreen) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuHighlightFg)) {
                             append(screen.displayName)
@@ -136,7 +136,7 @@ private fun BottomStatusBar(
                     } else {
                         append(screen.displayName)
                     }
-                    if (index < UiState.Screen.navEntries.lastIndex) {
+                    if (index < UiState.Screen.NAV_ENTRIES.lastIndex) {
                         withStyle(SpanStyle(LocalColorsPalette.current.menuDividerFg)) {
                             append(" | ")
                         }

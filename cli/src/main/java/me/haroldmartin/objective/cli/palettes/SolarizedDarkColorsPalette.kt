@@ -1,21 +1,21 @@
-package me.haroldmartin.objective.cli.palletes
+package me.haroldmartin.objective.cli.palettes
 
 import com.jakewharton.mosaic.ui.Color
 
-private val White = Color(253, 247, 205)
-private val Cyan = Color(0, 236, 216)
-private val Red = Color(233, 39, 65)
-private val Green = Color(62, 200, 64)
-private val Blue = Color(65, 143, 221)
-private val Orange = Color(255, 153, 0)
-private val Black1 = Color(0, 0, 0)
-private val Black2 = Color(52, 60, 80)
+private val White = Color(248, 248, 242)
+private val Cyan = Color(42, 161, 152)
+private val Red = Color(211, 1, 2)
+private val Green = Color(133, 153, 0)
+private val Blue = Color(38, 139, 210)
+private val Orange = Color(203, 75, 22)
+private val Black1 = Color(0, 43, 54)
+private val Black2 = Color(7, 54, 66)
 
-internal val BlackBirdColorsPalette =
+internal val SolarizedDarkColorsPalette =
     ColorsPalette(
         mainBg = Black1,
         menuBg = Black1,
-        menuFg = Black2,
+        menuFg = White,
         menuDividerFg = Black2,
         menuHighlightFg = Orange,
         statusBarFg = Blue,
