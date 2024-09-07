@@ -20,7 +20,7 @@ jobs:
       - name: Publish Library
         run: |
           cd objective-sdk-kotlin-multiplatform
-          ./gradlew :objective:assemble :objective:publishAndReleaseToMavenCentral :objective:updatePackageSwift --no-configuration-cache --no-parallel
+          ./gradlew :objective-sdk:assemble :objective-sdk:publishAndReleaseToMavenCentral :objective-sdk:updatePackageSwift --no-configuration-cache --no-parallel
           ./gradlew :cli:assemble :cli:publishAndReleaseToMavenCentral --no-configuration-cache --no-parallel
         env:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
