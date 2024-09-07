@@ -9,6 +9,11 @@ plugins {
     alias(libs.plugins.dokka) apply false
 }
 
+allprojects {
+    group = "me.haroldmartin"
+    version = "0.3.2"
+}
+
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     dependencies {

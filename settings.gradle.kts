@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Objective_SDK"
-include(":objective")
+rootProject.name = "Objective"
+include(":objective-sdk")
 include(":cli")
