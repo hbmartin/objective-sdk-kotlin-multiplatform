@@ -33,11 +33,11 @@ class ObjectsStore(
             stateFlow.value =
                 ObjectsListScreenUiState(
                     objects
-                        .map {
+                        .map { obj ->
                             ObjectsListScreenUiState.ObjectItem(
-                                id = it.id,
-                                updatedAt = it.updatedAt.toString(),
-                                objectData = it.objectData,
+                                id = obj.id,
+                                updatedAt = obj.updatedAt.toString(),
+                                objectData = obj.objectData,
                             )
                         },
                 )
@@ -70,9 +70,9 @@ class ObjectsStore(
 
     fun delete() {
         val objectId =
-            stateFlow.value.selectedRow?.let {
+            stateFlow.value.selectedRow?.let { selectedObjectIndex ->
                 stateFlow.value.items
-                    ?.get(it)
+                    ?.get(selectedObjectIndex)
                     ?.id
             } ?: return
 

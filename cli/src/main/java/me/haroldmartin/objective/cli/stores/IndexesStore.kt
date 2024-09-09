@@ -38,10 +38,10 @@ class IndexesStore(
             stateFlow.value =
                 IndexesListScreenUiState(
                     indexes
-                        .map {
+                        .map { idx ->
                             IndexesListScreenUiState.IndexItem(
-                                id = it.id,
-                                updatedAt = it.updatedAt.toString(),
+                                id = idx.id,
+                                updatedAt = idx.updatedAt.toString(),
                             )
                         },
                 )
