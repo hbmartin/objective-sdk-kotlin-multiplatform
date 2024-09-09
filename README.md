@@ -25,7 +25,15 @@ Clone this repository to run the CLI / TUI or install with Homebrew.
 ```shell
 # Set your API key
 export OBJECTIVE_KEY=sk_...
+# Install with homebrew
 brew install hbmartin/objective/objective
+# Checklist of commands
+objective -h
+# To start the interactive TUI
+objective
+# Optional alias
+alias obj="objective"
+echo 'alias obj="objective"' >> ~/.zshrc
 ```
 
 ## Install and use the SDK library
