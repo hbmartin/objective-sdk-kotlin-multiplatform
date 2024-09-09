@@ -22,7 +22,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./objective/build/dokka/html
+          path: ./objective-sdk/build/dokka/html
   deploy:
     needs: build
     permissions:

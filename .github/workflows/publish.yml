@@ -52,6 +52,8 @@ jobs:
         run: |
           cd objective-sdk-ios
           cp ../objective-sdk-kotlin-multiplatform/Package.swift Package.swift
+          echo "Fixing KMMBridge double slash bug"
+          sed -i 's/maven2\/\//maven2\//' Package.swift
           git config user.name hbmartin[bot]
           git config user.email harold.martin@gmail.com
           git add Package.swift
