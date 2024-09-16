@@ -18,7 +18,7 @@ subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
-        detektPlugins("me.haroldmartin:hbmartin-detekt-rules:0.1.6")
+        detektPlugins("me.haroldmartin:hbmartin-detekt-rules:0.1.7")
     }
     detekt {
         allRules = true
