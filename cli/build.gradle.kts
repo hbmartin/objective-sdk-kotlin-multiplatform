@@ -39,7 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8")
     implementation("org.jline:jline:3.26.3")
     implementation("org.slf4j:slf4j-nop:2.0.15")
-    detektPlugins("io.nlopez.compose.rules:detekt:0.4.11")
+    detektPlugins("io.nlopez.compose.rules:detekt:0.4.12")
 }
 
 mavenPublishing {
